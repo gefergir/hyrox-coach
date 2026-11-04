@@ -17,7 +17,7 @@
             "cada_s": 120,
             "rondas": 3
           },
-          "descanso_s": null,
+          "descanso_s": 0,
           "ejercicios": [
             "12 cal Row",
             "6 Burpees Over Rower"
@@ -30,7 +30,7 @@
             "cada_s": 120,
             "rondas": 3
           },
-          "descanso_s": null,
+          "descanso_s": 0,
           "ejercicios": [
             "10 DB Devil Press",
             "12 DB Deadlift"
@@ -43,7 +43,7 @@
             "cada_s": 120,
             "rondas": 3
           },
-          "descanso_s": null,
+          "descanso_s": 0,
           "ejercicios": [
             "10/10 KB Single Arm Push Press",
             "15 KB Swings"
@@ -56,7 +56,7 @@
             "cada_s": 120,
             "rondas": 3
           },
-          "descanso_s": null,
+          "descanso_s": 0,
           "ejercicios": [
             "14 Box Step Overs con carga",
             "15 Push Ups"
@@ -69,7 +69,7 @@
             "cada_s": 120,
             "rondas": 3
           },
-          "descanso_s": null,
+          "descanso_s": 0,
           "ejercicios": [
             "20 m Sled Push",
             "20 m Backward Drag"
@@ -268,7 +268,7 @@
             "tipo": "amrap",
             "duracion_s": 480
           },
-          "descanso_s": null,
+          "descanso_s": 60,
           "ejercicios": [
             "30 cal Echo Bike",
             "30 Box Jump Overs",
@@ -281,7 +281,7 @@
             "tipo": "amrap",
             "duracion_s": 480
           },
-          "descanso_s": null,
+          "descanso_s": 60,
           "ejercicios": [
             "40 m Sled Push",
             "40 m Sled Pull",
@@ -294,7 +294,7 @@
             "tipo": "amrap",
             "duracion_s": 480
           },
-          "descanso_s": null,
+          "descanso_s": 60,
           "ejercicios": [
             "350 m Run juntos",
             "20 DB Alternating Snatch",
@@ -317,10 +317,5 @@
       ]
     }
   ],
-  "dudas": [
-    "Lunes: el plan no indica descanso entre zonas; se interpreta 3 rondas de 2 min por zona (6 min).",
-    "Jueves: el Bloque B indica 10 min, pero 5 salidas cada 2:30 suman 12:30.",
-    "Jueves: el Bloque C indica 10 min, pero 3 salidas cada 5 min suman 15:00.",
-    "Viernes: el plan no indica descanso entre bloques; el Bloque 4 no repite AMRAP 8 y se toma de la cabecera."
-  ]
+  "dudas": []
 }
