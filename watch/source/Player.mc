@@ -17,6 +17,7 @@ const ST_DONE = 3;
 
 class PlayerView extends WatchUi.View {
     var sesion;
+    var startBlock; // Bloque por el que se empieza, elegido con UP/DOWN
     var steps;
     var idx;
     var state;
@@ -25,6 +26,7 @@ class PlayerView extends WatchUi.View {
     var session;
     var lapField;
     var usesGps;
+    var isRunSport;
     var ticker;
 
     var accumMs;    // Tiempo activo acumulado antes de la última reanudación
@@ -32,19 +34,23 @@ class PlayerView extends WatchUi.View {
     var stepStart;  // Tiempo activo en el que empezó el paso actual
 
     var laps;       // Rondas marcadas con LAP en el paso actual
+    var exIdx;      // Ejercicio en curso dentro del paso actual
     var workMarked; // En un intervalo, LAP ya marcó el final del trabajo
     var warned;     // Ya se avisó de que quedan 3 segundos
 
     function initialize(aSesion) {
         View.initialize();
         sesion = aSesion;
-        steps = Plan.buildSteps(aSesion);
+        startBlock = 0;
+        steps = Plan.buildSteps(aSesion, startBlock);
         idx = 0;
         state = $.ST_READY;
         doneText = "";
         session = null;
         lapField = null;
-        usesGps = "carrera".equals(aSesion["deporte"]);
+        isRunSport = "carrera".equals(aSesion["deporte"]);
+        // El GPS se activa también en sesiones mixtas con algún "Run" para dar el ritmo.
+        usesGps = isRunSport || Plan.sessionHasRun(aSesion);
         ticker = null;
         accumMs = 0;
         runStart = 0;
@@ -55,6 +61,7 @@ class PlayerView extends WatchUi.View {
 
     function resetStepMarks() {
         laps = 0;
+        exIdx = 0;
         workMarked = false;
         warned = false;
     }
@@ -117,7 +124,7 @@ class PlayerView extends WatchUi.View {
         if (name.length() > 15) {
             name = name.substring(0, 15);
         }
-        var options = usesGps
+        var options = isRunSport
             ? {:name => name, :sport => Activity.SPORT_RUNNING}
             : {:name => name, :sport => Activity.SPORT_TRAINING, :subSport => Activity.SUB_SPORT_CARDIO_TRAINING};
 
@@ -172,13 +179,34 @@ class PlayerView extends WatchUi.View {
         session.addLap();
     }
 
+    // Ejercicio en curso, o null si el paso no los sigue uno a uno.
+    function currentExercise(step) {
+        var data = step["data"];
+        if (data == null || data["ejercicios"] == null) {
+            return null;
+        }
+        var list = data["ejercicios"];
+        return exIdx < list.size() ? list[exIdx] : null;
+    }
+
     function lapLabel() {
         var step = steps[idx];
-        if (step["kind"] == $.KIND_INTERVAL) {
-            return step["name"] + " R" + step["round"] + (workMarked ? " resto" : "");
+        var kind = step["kind"];
+        if (kind == $.KIND_INTERVAL) {
+            var intervalBase = step["name"] + " R" + step["round"];
+            if (workMarked) {
+                return intervalBase + " resto";
+            }
+            var intervalEx = currentExercise(step);
+            return intervalEx != null ? intervalBase + " " + intervalEx : intervalBase;
         }
-        if (step["kind"] == $.KIND_ROUNDS) {
-            return step["name"] + " R" + (laps + 1);
+        if (kind == $.KIND_ROUNDS) {
+            if (step["amrap"]) {
+                return step["name"] + " " + laps + " rondas";
+            }
+            var roundsBase = step["name"] + " R" + (laps + 1);
+            var roundsEx = currentExercise(step);
+            return roundsEx != null ? roundsBase + " " + roundsEx : roundsBase;
         }
         return step["name"];
     }
@@ -282,18 +310,54 @@ class PlayerView extends WatchUi.View {
             return;
         }
 
-        var kind = steps[idx]["kind"];
+        var step = steps[idx];
+        var kind = step["kind"];
+        var list = step["data"] != null ? step["data"]["ejercicios"] : null;
         if (kind == $.KIND_REST) {
             jumpTo(idx + 1);
         } else if (kind == $.KIND_ROUNDS) {
-            writeLap(lapLabel());
-            laps += 1;
+            if (step["amrap"]) {
+                // AMRAP: una sola vuelta por bloque, que cierra el tiempo. LAP solo cuenta rondas.
+                laps += 1;
+            } else {
+                // Cuenta atrás: cada LAP cierra el ejercicio (o el turno, con roles).
+                writeLap(lapLabel());
+                if (list == null) {
+                    laps += 1;
+                } else {
+                    exIdx += 1;
+                    if (exIdx >= list.size()) {
+                        exIdx = 0;
+                        laps += 1;
+                    }
+                }
+            }
             vibrate(150);
         } else if (!workMarked) {
+            // Intervalo: cada LAP cierra un ejercicio; tras el último, el resto
+            // hasta la siguiente salida va en su propia vuelta.
             writeLap(lapLabel());
-            workMarked = true;
+            exIdx += 1;
+            if (list == null || exIdx >= list.size()) {
+                workMarked = true;
+            }
             vibrate(150);
         }
+        WatchUi.requestUpdate();
+    }
+
+    // UP/DOWN antes de empezar: elige el bloque inicial.
+    function onUpDown(delta) {
+        if (state != $.ST_READY) {
+            return;
+        }
+        var n = sesion["bloques"].size();
+        if (n < 2) {
+            return;
+        }
+        startBlock = (startBlock + delta + n) % n;
+        steps = Plan.buildSteps(sesion, startBlock);
+        idx = 0;
         WatchUi.requestUpdate();
     }
 
@@ -324,6 +388,45 @@ class PlayerView extends WatchUi.View {
             return ["Tú: " + joinList(first), "Pareja: " + joinList(second)];
         }
         return data["ejercicios"];
+    }
+
+    // Línea resaltada: el ejercicio en curso, o -1 si no se siguen uno a uno.
+    function highlightIndex(step) {
+        var data = step["data"];
+        if (data == null || data["ejercicios"] == null || step["amrap"]) {
+            return -1;
+        }
+        if (step["kind"] == $.KIND_INTERVAL && workMarked) {
+            return -1;
+        }
+        return exIdx;
+    }
+
+    function showPace(step) {
+        var data = step["data"];
+        if (!usesGps || data == null) {
+            return false;
+        }
+        var roles = data["roles"];
+        if (roles != null) {
+            return Plan.anyRun(laps % 2 == 0 ? roles["A"] : roles["B"]);
+        }
+        if (step["amrap"]) {
+            return Plan.anyRun(data["ejercicios"]);
+        }
+        if (step["kind"] == $.KIND_INTERVAL && workMarked) {
+            return false;
+        }
+        return Plan.isRun(currentExercise(step));
+    }
+
+    function paceText() {
+        var info = Activity.getActivityInfo();
+        var speed = info != null ? info.currentSpeed : null;
+        if (speed == null || speed < 0.5) {
+            return "--:--";
+        }
+        return formatSecs((1000.0 / speed).toNumber());
     }
 
     function stepCaption(step) {
@@ -377,11 +480,17 @@ class PlayerView extends WatchUi.View {
     function drawReady(dc, h) {
         var white = Graphics.COLOR_WHITE;
         var gray = Graphics.COLOR_LT_GRAY;
-        drawCentered(dc, h * 0.28, Graphics.FONT_SMALL, Plan.dayLabel(sesion["dia"]), 0x00E5A8);
-        drawCentered(dc, h * 0.42, Graphics.FONT_TINY, fitLine(dc, sesion["nombre"], Graphics.FONT_TINY, 0.85), white);
-        var summary = sesion["bloques"].size() + " bloques · " + totalMinutes() + " min";
-        drawCentered(dc, h * 0.56, Graphics.FONT_XTINY, summary, gray);
-        drawCentered(dc, h * 0.74, Graphics.FONT_XTINY, "START para empezar", white);
+        var bloques = sesion["bloques"];
+        drawCentered(dc, h * 0.22, Graphics.FONT_SMALL, Plan.dayLabel(sesion["dia"]), 0x00E5A8);
+        drawCentered(dc, h * 0.34, Graphics.FONT_TINY, fitLine(dc, sesion["nombre"], Graphics.FONT_TINY, 0.85), white);
+        var summary = bloques.size() + " bloques · " + totalMinutes() + " min";
+        drawCentered(dc, h * 0.45, Graphics.FONT_XTINY, summary, gray);
+        if (bloques.size() > 1) {
+            var first = "Empieza: " + bloques[startBlock]["nombre"];
+            drawCentered(dc, h * 0.58, Graphics.FONT_TINY, fitLine(dc, first, Graphics.FONT_TINY, 0.85), 0xFF9F1C);
+            drawCentered(dc, h * 0.68, Graphics.FONT_XTINY, "UP/DOWN para cambiar", gray);
+        }
+        drawCentered(dc, h * 0.80, Graphics.FONT_XTINY, "START para empezar", white);
     }
 
     function drawDone(dc, h) {
@@ -406,11 +515,23 @@ class PlayerView extends WatchUi.View {
         drawCentered(dc, h * 0.39, Graphics.FONT_NUMBER_HOT, formatSecs(secondsLeft), white);
 
         var lines = stepLines(step);
+        var hi = highlightIndex(step);
+        var pace = showPace(step);
+        var maxLines = pace ? 2 : 3;
+        var first = hi >= maxLines ? hi - maxLines + 1 : 0;
+        var count = lines.size() - first;
+        if (count > maxLines) {
+            count = maxLines;
+        }
         var y = h * 0.58;
-        var count = lines.size() > 3 ? 3 : lines.size();
         for (var i = 0; i < count; i++) {
-            drawCentered(dc, y, Graphics.FONT_XTINY, fitLine(dc, lines[i], Graphics.FONT_XTINY, 0.86), white);
+            var j = first + i;
+            var lineColor = hi < 0 ? white : (j == hi ? color : gray);
+            drawCentered(dc, y, Graphics.FONT_XTINY, fitLine(dc, lines[j], Graphics.FONT_XTINY, 0.86), lineColor);
             y += h * 0.085;
+        }
+        if (pace) {
+            drawCentered(dc, h * 0.75, Graphics.FONT_TINY, "Ritmo " + paceText() + " /km", color);
         }
 
         var info = Activity.getActivityInfo();
@@ -447,6 +568,10 @@ class PlayerDelegate extends WatchUi.InputDelegate {
             player.onStartKey();
         } else if (key == WatchUi.KEY_ESC || key == WatchUi.KEY_LAP) {
             player.onLapKey();
+        } else if (key == WatchUi.KEY_UP) {
+            player.onUpDown(-1);
+        } else if (key == WatchUi.KEY_DOWN) {
+            player.onUpDown(1);
         }
         return true;
     }

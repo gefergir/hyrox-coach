@@ -28,10 +28,13 @@ Para probarla antes en el simulador, abre el proyecto `watch` con la extensión 
 
 | Botón | Acción |
 |---|---|
+| UP / DOWN | Antes de empezar, elegir el bloque inicial. Se sigue en orden ascendente y se vuelve al principio (3, 4, 5, 1, 2) |
 | START | Empezar, pausar o salir al terminar |
-| BACK | Marcar una ronda, cambiar de rol, marcar el final del trabajo o saltar el descanso |
+| BACK | Terminar el ejercicio en curso (intervalos y cuenta atrás), cambiar de rol, contar una ronda en un AMRAP o saltar el descanso |
 | Pantalla táctil | Sin función, para evitar pulsaciones accidentales |
+
+Si un ejercicio es de carrera ("Run"), la pantalla muestra el ritmo actual y la sesión usa el GPS.
 
 La pausa también permite saltar el bloque, guardar o descartar.
 
-Cada entreno se guarda en Garmin Connect con una vuelta por paso. El nombre de cada paso se graba en el campo `paso` del archivo FIT, aunque Garmin Connect podría no mostrarlo.
+Cada entreno se guarda en Garmin Connect con una vuelta por ejercicio (un AMRAP es una sola vuelta por bloque) y otra por cada descanso. El nombre de cada paso se graba en el campo `paso` del archivo FIT, aunque Garmin Connect podría no mostrarlo.

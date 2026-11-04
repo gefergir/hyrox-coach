@@ -72,12 +72,51 @@ module Plan {
         return menu;
     }
 
-    // Convierte los bloques de una sesión en una lista de pasos con crono.
-    function buildSteps(sesion) {
+    // true si el texto es un ejercicio de carrera ("250 m Run", "Run juntos").
+    function isRun(text) {
+        return text != null && (" " + text.toLower() + " ").find(" run ") != null;
+    }
+
+    function anyRun(list) {
+        if (list == null) {
+            return false;
+        }
+        for (var i = 0; i < list.size(); i++) {
+            if (isRun(list[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function blockHasRun(bloque) {
+        var roles = bloque["roles"];
+        if (roles != null) {
+            return anyRun(roles["A"]) || anyRun(roles["B"]);
+        }
+        return anyRun(bloque["ejercicios"]);
+    }
+
+    function sessionHasRun(sesion) {
         var bloques = sesion["bloques"];
+        for (var i = 0; i < bloques.size(); i++) {
+            if (blockHasRun(bloques[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Convierte los bloques de una sesión en una lista de pasos con crono.
+    // Empieza en el bloque `start` y sigue en orden ascendente, volviendo al
+    // principio: con 5 zonas y start = 2 el orden es 3, 4, 5, 1, 2.
+    function buildSteps(sesion, start) {
+        var bloques = sesion["bloques"];
+        var n = bloques.size();
         var steps = [];
 
-        for (var i = 0; i < bloques.size(); i++) {
+        for (var k = 0; k < n; k++) {
+            var i = (start + k) % n;
             var bloque = bloques[i];
             var timer = bloque["timer"];
 
@@ -91,6 +130,7 @@ module Plan {
                         "secs" => timer["cada_s"],
                         "round" => r,
                         "rounds" => total,
+                        "amrap" => false,
                         "data" => bloque
                     });
                 }
@@ -102,12 +142,18 @@ module Plan {
                     "secs" => timer["duracion_s"],
                     "round" => 0,
                     "rounds" => 0,
+                    "amrap" => "amrap".equals(timer["tipo"]),
                     "data" => bloque
                 });
             }
 
             var rest = bloque["descanso_s"];
-            if (rest != null && rest > 0 && i < bloques.size() - 1) {
+            // El último bloque del plan no trae descanso porque no va seguido de
+            // nada. Si al rotar queda en medio, usa el descanso del anterior.
+            if ((rest == null || rest == 0) && i == n - 1 && n > 1) {
+                rest = bloques[n - 2]["descanso_s"];
+            }
+            if (rest != null && rest > 0 && k < n - 1) {
                 steps.add({
                     "kind" => $.KIND_REST,
                     "block" => i,
@@ -115,6 +161,7 @@ module Plan {
                     "secs" => rest,
                     "round" => 0,
                     "rounds" => 0,
+                    "amrap" => false,
                     "data" => null
                 });
             }
