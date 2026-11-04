@@ -1,0 +1,16 @@
+{
+  "retos": [
+    {
+      "nombre": "Valencia contra el Cáncer",
+      "fecha": "2026-11-22",
+      "tipo": "carrera",
+      "distancia_km": 6
+    },
+    {
+      "nombre": "Media Maratón de Santa Pola",
+      "fecha": "2027-01-24",
+      "tipo": "carrera",
+      "distancia_km": 21.1
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "actualizado": "2026-11-04",
+  "sugerencias": [
+    { "nombre": "Carrera por la Solidaridad", "tipo": "carrera", "fecha": "2026-11-08", "lugar": "València", "distancia_km": 5, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
+    { "nombre": "HYROX Barcelona", "tipo": "hyrox", "fecha": "2026-11-11", "fecha_fin": "2026-11-15", "lugar": "Barcelona", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "HYROX London", "tipo": "hyrox", "fecha": "2026-12-02", "fecha_fin": "2026-12-06", "lugar": "Londres", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "HYROX Milan", "tipo": "hyrox", "fecha": "2026-12-04", "fecha_fin": "2026-12-06", "lugar": "Milán", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "Bimbo Breakfast Run", "tipo": "carrera", "fecha": "2026-12-05", "lugar": "València", "distancia_km": 5, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
+    { "nombre": "Maratón València", "tipo": "carrera", "fecha": "2026-12-06", "lugar": "València", "distancia_km": 42.195, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
+    { "nombre": "Hybrid Day Vigo", "tipo": "hybrid", "fecha": "2026-12-12", "fecha_fin": "2026-12-13", "lugar": "Vigo", "fuente": "https://hybrid-day.com/es/eventos/" },
+    { "nombre": "HYROX Paris", "tipo": "hyrox", "fecha": "2026-12-12", "fecha_fin": "2026-12-20", "lugar": "París", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "Pas Ras al Port", "tipo": "carrera", "fecha": "2026-12-13", "lugar": "València", "distancia_km": 10, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
+    { "nombre": "Hybrid Day Aveiro", "tipo": "hybrid", "fecha": "2027-01-23", "lugar": "Aveiro", "fuente": "https://hybrid-day.com/es/eventos/" },
+    { "nombre": "HYROX Toulouse", "tipo": "hyrox", "fecha": "2027-02-03", "fecha_fin": "2027-02-07", "lugar": "Toulouse", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "HYROX Bilbao", "tipo": "hyrox", "fecha": "2027-02-06", "fecha_fin": "2027-02-07", "lugar": "Bilbao", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "HYROX Madrid", "tipo": "hyrox", "fecha": "2027-03-17", "fecha_fin": "2027-03-21", "lugar": "Madrid", "fuente": "https://hyrox.com/find-my-race/" },
+    { "nombre": "HYROX Málaga", "tipo": "hyrox", "fecha": "2027-04-15", "fecha_fin": "2027-04-18", "lugar": "Málaga", "fuente": "https://hyrox.com/find-my-race/" }
+  ]
+}

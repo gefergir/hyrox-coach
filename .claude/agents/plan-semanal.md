@@ -10,7 +10,7 @@ Conviertes una imagen de entrenos semanales en `docs/plan.json`, el archivo que 
 ## Pasos
 
 1. Lee la imagen entera. Fíjate también en textos cortados y en las cabeceras de cada día.
-2. Sobrescribe `docs/plan.json` por completo. El plan anterior desaparece.
+2. Sobrescribe `docs/plan.json` por completo. El plan anterior desaparece. No toques `docs/agenda.json` ni `docs/retos.json`.
 3. Ejecuta `python3 tools/validar_plan.py docs/plan.json`. Si falla, corrige el JSON y repítelo.
 4. Devuelve la salida del validador y todas las dudas. No hagas commit.
 

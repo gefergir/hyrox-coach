@@ -1,0 +1,5 @@
+<resources>
+    <jsonData id="AgendaInicial" filename="agenda_inicial.json"/>
+    <jsonData id="RetosInicial" filename="retos_inicial.json"/>
+    <jsonData id="SugerenciasInicial" filename="sugerencias_inicial.json"/>
+</resources>

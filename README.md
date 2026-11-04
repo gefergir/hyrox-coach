@@ -38,3 +38,23 @@ Si un ejercicio es de carrera ("Run"), la pantalla muestra el ritmo actual y la 
 La pausa también permite saltar el bloque, guardar o descartar.
 
 Cada entreno se guarda en Garmin Connect con una vuelta por ejercicio (un AMRAP es una sola vuelta por bloque) y otra por cada descanso. El nombre de cada paso se graba en el campo `paso` del archivo FIT, aunque Garmin Connect podría no mostrarlo.
+
+# Mi Temporada
+
+Segunda app, independiente, en `watch-temporada/`. Tiene cinco apartados:
+
+- **Mascota**: un osito que gana músculo con tus entrenos (gym: brazos y torso; carrera: piernas; Hyrox: todo). Lee el historial del reloj al abrir la app. Cuenta 1 punto por minuto y 5 por km corrido; las actividades de menos de 10 minutos no cuentan. Se pone triste tras 5 días sin entrenar.
+- **Semana**: tu agenda (`docs/agenda.json`) con «Hoy» y lo ya hecho.
+- **Retos**: tus carreras y Hyrox (`docs/retos.json`), con los días que faltan y un semáforo estimado.
+- **Sugerencias**: HYROX, Hybrid Day y carreras cerca de Valencia (`docs/sugerencias.json`).
+- **Info**: cómo gana puntos la mascota.
+
+Compila con:
+
+```powershell
+.\build-temporada.ps1 -BaseUrl "https://TU_USUARIO.github.io/hyrox-coach/"
+```
+
+y copia `watch-temporada\bin\MiTemporada.prg` en `GARMIN\APPS`.
+
+Para cambiar la agenda, dicta tu semana a Claude en este repositorio: solo se modifica `docs/agenda.json`.
