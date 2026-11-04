@@ -126,7 +126,7 @@ class PlayerView extends WatchUi.View {
         }
         var options = isRunSport
             ? {:name => name, :sport => Activity.SPORT_RUNNING}
-            : {:name => name, :sport => Activity.SPORT_TRAINING, :subSport => Activity.SUB_SPORT_CARDIO_TRAINING};
+            : {:name => name, :sport => Activity.SPORT_HIIT, :subSport => Activity.SUB_SPORT_GENERIC};
 
         Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
         if (usesGps) {
