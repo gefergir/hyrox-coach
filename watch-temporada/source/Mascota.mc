@@ -9,6 +9,9 @@ module Mascota {
     const MAX_LEVEL = 15;
     const SAD_DAYS = 5;
     const PTS_PER_KM = 5;
+    // La mascota nace este día en nivel 0: solo cuentan los entrenos desde aquí.
+    // Si se cambia, los puntos guardados se reinician.
+    const INICIO = "2026-11-04";
 
     function points() {
         var pts = Application.Storage.getValue("pts");
@@ -20,6 +23,13 @@ module Mascota {
 
     // Suma las actividades posteriores a la última ya contada (por startTime).
     function update(acts) {
+        if (!INICIO.equals(Application.Storage.getValue("inicio"))) {
+            Application.Storage.setValue("pts", {"gym" => 0, "carrera" => 0, "hyrox" => 0});
+            Application.Storage.deleteValue("ultimo");
+            Application.Storage.deleteValue("ultimoDia");
+            Application.Storage.setValue("inicio", INICIO);
+        }
+        var inicioDn = Historial.parseDate(INICIO);
         var pts = points();
         var ultimo = Application.Storage.getValue("ultimo");
         var ultimoDia = Application.Storage.getValue("ultimoDia");
@@ -29,6 +39,9 @@ module Mascota {
         var maxStart = ultimo;
         for (var i = 0; i < acts.size(); i++) {
             var a = acts[i];
+            if (a["dn"] < inicioDn) {
+                continue;
+            }
             if (a["start"] > ultimo) {
                 var p = a["secs"] / 60;
                 if (a["cat"].equals(Historial.CAT_CARRERA)) {
@@ -68,16 +81,16 @@ module Mascota {
     }
 
     function daysWithoutTraining() {
+        // Sin entrenos todavía: se cuenta desde el día en que nació.
         var last = Application.Storage.getValue("ultimoDia");
         if (last == null) {
-            return null;
+            last = Historial.parseDate(INICIO);
         }
         return Historial.today() - last;
     }
 
     function isSad() {
-        var d = daysWithoutTraining();
-        return d == null || d >= SAD_DAYS;
+        return daysWithoutTraining() >= SAD_DAYS;
     }
 }
 
@@ -273,8 +286,10 @@ class MascotaView extends WatchUi.View {
         if (lvl >= Mascota.MAX_LEVEL) {
             return "¡Ya no quepo!";
         }
-        var d = Mascota.daysWithoutTraining();
-        return d != null && d <= 1 ? "¡Qué bien entrenamos!" : "¡Sigue así!";
+        if (Application.Storage.getValue("ultimoDia") == null) {
+            return "¡Hola! ¿Entrenamos?";
+        }
+        return Mascota.daysWithoutTraining() <= 1 ? "¡Qué bien entrenamos!" : "¡Sigue así!";
     }
 
     // Mezcla dos colores RGB: t = 0 -> a, t = 1 -> b.

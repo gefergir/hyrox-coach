@@ -30,9 +30,17 @@ Cuando el usuario dicte o cuente su semana de entrenos (gym, series, rodaje, tir
 
 La agenda cambia solo `docs/agenda.json`. Nunca `docs/plan.json`.
 
-## Retos
+## Retos y nuevas competiciones
 
-Los retos están en `docs/retos.json`. Antes de añadir un Hyrox, comprueba la fecha en la web oficial de HYROX. Valida con `tools/validar_retos.py`, haz commit con el mensaje `Retos: ...` y push.
+Los retos están en `docs/retos.json` (nombre, fecha, tipo `carrera` o `hyrox`, distancia_km).
+
+Cuando el usuario diga que tiene una competición nueva (por ejemplo, «tengo una nueva competición esta semana»):
+
+1. Saca nombre, fecha, tipo y distancia de lo que diga. Si falta la fecha o no está claro si es carrera o hyrox, pregúntalo. En un Hyrox sin distancia, usa 8 km.
+2. Si es un HYROX oficial o una carrera con web, comprueba la fecha en la web oficial antes de guardarla. Si es de un gimnasio u otro evento sin web, usa los datos del usuario.
+3. Añádela a `docs/retos.json` y quítala de `docs/sugerencias.json` si estaba allí. No borres retos pasados salvo que el usuario lo pida.
+4. Valida con `tools/validar_retos.py` (y `tools/validar_sugerencias.py` si lo tocaste), haz commit con el mensaje `Retos: <nombre>` y push a `main`. La app lo descarga al abrirse con el móvil conectado.
+5. Responde con la lista de retos y los días que faltan. No muestres el JSON.
 
 ## Sugerencias
 

@@ -11,6 +11,12 @@
       "fecha": "2027-01-24",
       "tipo": "carrera",
       "distancia_km": 21.1
+    },
+    {
+      "nombre": "Hyrox Zoma (gimnasio)",
+      "fecha": "2027-02-13",
+      "tipo": "hyrox",
+      "distancia_km": 8
     }
   ]
 }
