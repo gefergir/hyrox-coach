@@ -1,19 +1,346 @@
 {
   "actualizado": "2026-11-04",
   "sugerencias": [
-    { "nombre": "Carrera por la Solidaridad", "tipo": "carrera", "fecha": "2026-11-08", "lugar": "València", "distancia_km": 5, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
-    { "nombre": "HYROX Barcelona", "tipo": "hyrox", "fecha": "2026-11-11", "fecha_fin": "2026-11-15", "lugar": "Barcelona", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "HYROX London", "tipo": "hyrox", "fecha": "2026-12-02", "fecha_fin": "2026-12-06", "lugar": "Londres", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "HYROX Milan", "tipo": "hyrox", "fecha": "2026-12-04", "fecha_fin": "2026-12-06", "lugar": "Milán", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "Bimbo Breakfast Run", "tipo": "carrera", "fecha": "2026-12-05", "lugar": "València", "distancia_km": 5, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
-    { "nombre": "Maratón València", "tipo": "carrera", "fecha": "2026-12-06", "lugar": "València", "distancia_km": 42.195, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
-    { "nombre": "Hybrid Day Vigo", "tipo": "hybrid", "fecha": "2026-12-12", "fecha_fin": "2026-12-13", "lugar": "Vigo", "fuente": "https://hybrid-day.com/es/eventos/" },
-    { "nombre": "HYROX Paris", "tipo": "hyrox", "fecha": "2026-12-12", "fecha_fin": "2026-12-20", "lugar": "París", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "Pas Ras al Port", "tipo": "carrera", "fecha": "2026-12-13", "lugar": "València", "distancia_km": 10, "fuente": "https://carreras.fdmvalencia.es/es/calendario/" },
-    { "nombre": "Hybrid Day Aveiro", "tipo": "hybrid", "fecha": "2027-01-23", "lugar": "Aveiro", "fuente": "https://hybrid-day.com/es/eventos/" },
-    { "nombre": "HYROX Toulouse", "tipo": "hyrox", "fecha": "2027-02-03", "fecha_fin": "2027-02-07", "lugar": "Toulouse", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "HYROX Bilbao", "tipo": "hyrox", "fecha": "2027-02-06", "fecha_fin": "2027-02-07", "lugar": "Bilbao", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "HYROX Madrid", "tipo": "hyrox", "fecha": "2027-03-17", "fecha_fin": "2027-03-21", "lugar": "Madrid", "fuente": "https://hyrox.com/find-my-race/" },
-    { "nombre": "HYROX Málaga", "tipo": "hyrox", "fecha": "2027-04-15", "fecha_fin": "2027-04-18", "lugar": "Málaga", "fuente": "https://hyrox.com/find-my-race/" }
+    {
+      "nombre": "10K Ciutat de Xirivella",
+      "tipo": "carrera",
+      "fecha": "2026-11-08",
+      "lugar": "Xirivella",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km"
+      ],
+      "hora": "10:30",
+      "fuente": "https://inscripciones.cronorunner.com/evento/i-10k-ciutat-de-xirivella"
+    },
+    {
+      "nombre": "8K Burjassot",
+      "tipo": "carrera",
+      "fecha": "2026-11-08",
+      "lugar": "Burjassot",
+      "distancia_km": 8,
+      "distancias": [
+        "8 km"
+      ],
+      "hora": "11:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/ii-8k-burjassot",
+      "circuito": "Circuit Horta Nord"
+    },
+    {
+      "nombre": "Carrera por la Solidaridad",
+      "tipo": "carrera",
+      "fecha": "2026-11-08",
+      "lugar": "València",
+      "distancia_km": 5,
+      "fuente": "https://carreras.fdmvalencia.es/es/calendario/",
+      "hora": "09:00",
+      "distancias": [
+        "5 km"
+      ]
+    },
+    {
+      "nombre": "HYROX Barcelona",
+      "tipo": "hyrox",
+      "fecha": "2026-11-11",
+      "fecha_fin": "2026-11-15",
+      "lugar": "Barcelona",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "10K Port de Catarroja",
+      "tipo": "carrera",
+      "fecha": "2026-11-14",
+      "lugar": "Catarroja",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km"
+      ],
+      "hora": "09:30",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xli-10k-volta-a-peu-port-de-catarroja",
+      "circuito": "Circuit Albufera"
+    },
+    {
+      "nombre": "10K Solidaria Marines",
+      "tipo": "carrera",
+      "fecha": "2026-11-15",
+      "lugar": "Marines",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km"
+      ],
+      "hora": "10:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/vii-10k-solidaria-marines",
+      "precio_desde": 5,
+      "circuito": "Circuit Camp de Túria"
+    },
+    {
+      "nombre": "10K y 5K Mislata",
+      "tipo": "carrera",
+      "fecha": "2026-11-15",
+      "lugar": "Mislata",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km",
+        "5 km"
+      ],
+      "hora": "11:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/45-10k-y-5k-mislata",
+      "precio_desde": 12
+    },
+    {
+      "nombre": "Mitja Marató Benifaió",
+      "tipo": "carrera",
+      "fecha": "2026-11-15",
+      "lugar": "Benifaió",
+      "distancia_km": 21.1,
+      "distancias": [
+        "21,1 km",
+        "10 km"
+      ],
+      "hora": "10:30",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xvii-mitja-marato-roquette-benifaio",
+      "precio_desde": 15
+    },
+    {
+      "nombre": "10K Dinosauris Moncada",
+      "tipo": "carrera",
+      "fecha": "2026-11-22",
+      "lugar": "Moncada",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km",
+        "5 km"
+      ],
+      "hora": "11:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xi-10k-y-5k-dinosauris-moncada",
+      "precio_desde": 10,
+      "circuito": "Circuit Horta Sud"
+    },
+    {
+      "nombre": "7K Port Saplaya",
+      "tipo": "carrera",
+      "fecha": "2026-11-22",
+      "lugar": "Alboraia",
+      "distancia_km": 7,
+      "distancias": [
+        "7 km"
+      ],
+      "hora": "10:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/7k-rotary-port-saplaya",
+      "circuito": "Circuit Horta Nord"
+    },
+    {
+      "nombre": "10K Dulces de Casinos",
+      "tipo": "carrera",
+      "fecha": "2026-11-28",
+      "lugar": "Casinos",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km"
+      ],
+      "hora": "10:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/carrera-popular-10k-dulces-de-casinos",
+      "precio_desde": 7,
+      "circuito": "Circuit Camp de Túria"
+    },
+    {
+      "nombre": "Gran Fons de Sueca",
+      "tipo": "carrera",
+      "fecha": "2026-11-29",
+      "lugar": "Sueca",
+      "distancia_km": 15,
+      "distancias": [
+        "15 km",
+        "8,5 km"
+      ],
+      "hora": "10:30",
+      "fuente": "https://inscripciones.cronorunner.com/evento/vii-gran-fons-i-carrera-trencant-barreres-per-la-salut-mental-de-sueca",
+      "precio_desde": 10
+    },
+    {
+      "nombre": "HYROX London",
+      "tipo": "hyrox",
+      "fecha": "2026-12-02",
+      "fecha_fin": "2026-12-06",
+      "lugar": "Londres",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "HYROX Milan",
+      "tipo": "hyrox",
+      "fecha": "2026-12-04",
+      "fecha_fin": "2026-12-06",
+      "lugar": "Milán",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "Bimbo Breakfast Run",
+      "tipo": "carrera",
+      "fecha": "2026-12-05",
+      "lugar": "València",
+      "distancia_km": 5,
+      "fuente": "https://carreras.fdmvalencia.es/es/calendario/",
+      "hora": "09:00",
+      "distancias": [
+        "5 km"
+      ]
+    },
+    {
+      "nombre": "Maratón València",
+      "tipo": "carrera",
+      "fecha": "2026-12-06",
+      "lugar": "València",
+      "distancia_km": 42.195,
+      "fuente": "https://carreras.fdmvalencia.es/es/calendario/",
+      "hora": "08:15",
+      "distancias": [
+        "42,2 km"
+      ]
+    },
+    {
+      "nombre": "HYROX Paris",
+      "tipo": "hyrox",
+      "fecha": "2026-12-12",
+      "fecha_fin": "2026-12-20",
+      "lugar": "París",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "Hybrid Day Vigo",
+      "tipo": "hybrid",
+      "fecha": "2026-12-12",
+      "fecha_fin": "2026-12-13",
+      "lugar": "Vigo",
+      "fuente": "https://hybrid-day.com/es/eventos/"
+    },
+    {
+      "nombre": "San Silvestre Pobla Farnals",
+      "tipo": "carrera",
+      "fecha": "2026-12-12",
+      "lugar": "La Pobla de Farnals",
+      "distancia_km": 5,
+      "distancias": [
+        "5 km"
+      ],
+      "hora": "21:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xi-san-silvestre-solidaria-pobla-de-farnals"
+    },
+    {
+      "nombre": "Pas Ras al Port",
+      "tipo": "carrera",
+      "fecha": "2026-12-13",
+      "lugar": "València",
+      "distancia_km": 10,
+      "fuente": "https://carreras.fdmvalencia.es/es/calendario/",
+      "hora": "09:00",
+      "distancias": [
+        "10 km"
+      ]
+    },
+    {
+      "nombre": "Cursa de Nadal Bétera",
+      "tipo": "carrera",
+      "fecha": "2026-12-19",
+      "lugar": "Bétera",
+      "distancia_km": 5,
+      "distancias": [
+        "5 km"
+      ],
+      "hora": "19:30",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xiv-cursa-de-nadal-de-betera",
+      "circuito": "Circuit Camp de Túria"
+    },
+    {
+      "nombre": "Sant Silvestre Almussafes",
+      "tipo": "carrera",
+      "fecha": "2026-12-19",
+      "lugar": "Almussafes",
+      "distancia_km": 5,
+      "distancias": [
+        "5 km"
+      ],
+      "hora": "19:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/ix-sant-silvestre-2026"
+    },
+    {
+      "nombre": "10K Foios",
+      "tipo": "carrera",
+      "fecha": "2026-12-20",
+      "lugar": "Foios",
+      "distancia_km": 10,
+      "distancias": [
+        "10 km"
+      ],
+      "hora": "11:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xiii-foios-per-fibrosi-quistica",
+      "precio_desde": 7
+    },
+    {
+      "nombre": "Sansil Trail",
+      "tipo": "carrera",
+      "fecha": "2026-12-20",
+      "lugar": "Calles",
+      "distancia_km": 11.6,
+      "distancias": [
+        "11,6 km trail"
+      ],
+      "hora": "11:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/xi-sansil-trail",
+      "precio_desde": 16
+    },
+    {
+      "nombre": "Hybrid Day Aveiro",
+      "tipo": "hybrid",
+      "fecha": "2027-01-23",
+      "lugar": "Aveiro",
+      "fuente": "https://hybrid-day.com/es/eventos/"
+    },
+    {
+      "nombre": "HYROX Toulouse",
+      "tipo": "hyrox",
+      "fecha": "2027-02-03",
+      "fecha_fin": "2027-02-07",
+      "lugar": "Toulouse",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "HYROX Bilbao",
+      "tipo": "hyrox",
+      "fecha": "2027-02-06",
+      "fecha_fin": "2027-02-07",
+      "lugar": "Bilbao",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "Carrera Lusitania",
+      "tipo": "carrera",
+      "fecha": "2027-02-07",
+      "lugar": "Marines",
+      "distancia_km": 21,
+      "distancias": [
+        "21 km trail",
+        "15 km",
+        "10,5 km"
+      ],
+      "hora": "10:00",
+      "fuente": "https://inscripciones.cronorunner.com/evento/carrera-lusitania",
+      "precio_desde": 16
+    },
+    {
+      "nombre": "HYROX Madrid",
+      "tipo": "hyrox",
+      "fecha": "2027-03-17",
+      "fecha_fin": "2027-03-21",
+      "lugar": "Madrid",
+      "fuente": "https://hyrox.com/find-my-race/"
+    },
+    {
+      "nombre": "HYROX Málaga",
+      "tipo": "hyrox",
+      "fecha": "2027-04-15",
+      "fecha_fin": "2027-04-18",
+      "lugar": "Málaga",
+      "fuente": "https://hyrox.com/find-my-race/"
+    }
   ]
 }

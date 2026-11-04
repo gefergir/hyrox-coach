@@ -50,7 +50,7 @@ class MainMenuDelegate extends WatchUi.Menu2InputDelegate {
             return;
         }
         if (id == :sugerencias) {
-            WatchUi.pushView(Sugerencias.buildMenu(), new SoloLecturaDelegate(), WatchUi.SLIDE_LEFT);
+            WatchUi.pushView(Sugerencias.buildMenu(), new SugerenciasDelegate(), WatchUi.SLIDE_LEFT);
             return;
         }
         if (id == :mascota) {

@@ -46,7 +46,7 @@ Cuando el usuario diga que tiene una competición nueva (por ejemplo, «tengo un
 
 `docs/sugerencias.json` tiene ideas de HYROX y Hybrid Day en España y Europa, y carreras populares cerca de Valencia. Cuando el usuario pida actualizarlas:
 
-1. Busca eventos futuros y comprueba cada fecha en la web oficial (hyrox.com/find-my-race, hybrid-day.com, el organizador o carreras.fdmvalencia.es). Pon esa URL en `fuente`. Si no puedes confirmar una fecha, no la añadas.
+1. Busca eventos futuros y comprueba cada fecha en la web oficial (hyrox.com/find-my-race, hybrid-day.com, carreras.fdmvalencia.es o, para la provincia de Valencia, la API pública de Cronorunner: https://inscripciones.cronorunner.com/api/public/events y /api/public/editions/<slug> con fecha, lugar, distancias, hora y precio). Pon esa URL en `fuente`. Si no puedes confirmar una fecha, no la añadas.
 2. Quita los eventos pasados y los que ya están en `docs/retos.json`.
 3. Valida con `tools/validar_sugerencias.py`, haz commit con el mensaje `Sugerencias: ...` y push.
 

@@ -6,7 +6,7 @@ from datetime import date
 from pathlib import Path
 
 TIPOS = {"hyrox", "hybrid", "carrera"}
-MAX_BYTES = 12 * 1024
+MAX_BYTES = 16 * 1024
 
 
 def fecha(valor):
@@ -40,6 +40,18 @@ def validar(datos):
         km = s.get("distancia_km")
         if km is not None and (isinstance(km, bool) or not isinstance(km, (int, float)) or km <= 0):
             errores.append(f"{prefijo}: distancia_km debe ser un número positivo u omitirse")
+        hora = s.get("hora")
+        if hora is not None and not (isinstance(hora, str) and len(hora) == 5 and hora[2] == ":"
+                                     and hora[:2].isdigit() and hora[3:].isdigit()):
+            errores.append(f"{prefijo}: hora debe ser HH:MM")
+        ds = s.get("distancias")
+        if ds is not None and (not isinstance(ds, list) or not all(isinstance(x, str) and x for x in ds)):
+            errores.append(f"{prefijo}: distancias debe ser una lista de textos")
+        precio = s.get("precio_desde")
+        if precio is not None and (isinstance(precio, bool) or not isinstance(precio, (int, float)) or precio < 0):
+            errores.append(f"{prefijo}: precio_desde debe ser un número >= 0")
+        if s.get("circuito") is not None and not isinstance(s["circuito"], str):
+            errores.append(f"{prefijo}: circuito debe ser texto")
         if isinstance(s.get("fuente"), str) and not s["fuente"].startswith("https://"):
             errores.append(f"{prefijo}: fuente debe ser una URL https")
     return errores
