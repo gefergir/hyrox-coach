@@ -1,0 +1,4 @@
+watch/bin/
+developer_key
+*.der
+*.pem

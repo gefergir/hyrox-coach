@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iq:manifest version="3" xmlns:iq="http://www.garmin.com/xml/connectiq">
+    <iq:application
+        id="5f0c2a7e9b3d4c61a8e4d17b6c3f9a20"
+        type="watch-app"
+        name="@Strings.AppName"
+        entry="HyroxApp"
+        launcherIcon="@Drawables.LauncherIcon"
+        minApiLevel="4.2.0"
+        version="0.1.0">
+
+        <iq:products>
+            <iq:product id="fr165m"/>
+            <iq:product id="fr165"/>
+        </iq:products>
+
+        <iq:permissions>
+            <iq:uses-permission id="Communications"/>
+            <iq:uses-permission id="Fit"/>
+            <iq:uses-permission id="FitContributor"/>
+            <iq:uses-permission id="Positioning"/>
+            <iq:uses-permission id="Sensor"/>
+        </iq:permissions>
+
+        <iq:languages>
+            <iq:language>spa</iq:language>
+        </iq:languages>
+
+        <iq:barrels>
+        </iq:barrels>
+    </iq:application>
+</iq:manifest>
