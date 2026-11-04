@@ -67,6 +67,7 @@ module Plan {
                 focus = i;
             }
         }
+        menu.addItem(new WatchUi.MenuItem("Simulacro HYROX", "8 km + 8 estaciones", :simulacro, {}));
         menu.addItem(new WatchUi.MenuItem("Actualizar plan", status, :sync, {}));
         menu.setFocus(focus);
         return menu;
@@ -181,6 +182,12 @@ class PlanMenuDelegate extends WatchUi.Menu2InputDelegate {
             item.setSubLabel("Actualizando...");
             WatchUi.requestUpdate();
             Application.getApp().sync.start(true);
+            return;
+        }
+
+        if (id == :simulacro) {
+            var sim = new SimView();
+            WatchUi.pushView(sim, new SimDelegate(sim), WatchUi.SLIDE_LEFT);
             return;
         }
 
