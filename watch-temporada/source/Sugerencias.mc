@@ -175,8 +175,9 @@ class SugerenciaView extends WatchUi.View {
         Graf.text(dc, w / 2, h * 0.12, Graphics.FONT_XTINY, tag, Graphics.COLOR_BLACK);
 
         // Nombre (hasta dos líneas)
-        var name = Graphics.fitTextToArea(s["nombre"], Graphics.FONT_SMALL, w * 0.78, dc.getFontHeight(Graphics.FONT_SMALL) * 2, true);
-        Graf.text(dc, w / 2, h * 0.255, Graphics.FONT_SMALL, name, Graphics.COLOR_WHITE);
+        var nf = dc.getTextWidthInPixels(s["nombre"], Graphics.FONT_SMALL) <= w * 0.76 ? Graphics.FONT_SMALL : Graphics.FONT_TINY;
+        var name = Graphics.fitTextToArea(s["nombre"], nf, w * 0.76, dc.getFontHeight(nf) * 2, true);
+        Graf.text(dc, w / 2, h * 0.255, nf, name, Graphics.COLOR_WHITE);
 
         // Cuenta atrás
         var days = dn - today;
@@ -227,8 +228,11 @@ class SugerenciaView extends WatchUi.View {
             if (slash != null) {
                 host = host.substring(0, slash);
             }
-            if (host.find("www.") == 0) {
-                host = host.substring(4, host.length());
+            // Solo el dominio principal: "inscripciones.cronorunner.com" -> "cronorunner.com"
+            var dot = host.find(".");
+            while (dot != null && host.substring(dot + 1, host.length()).find(".") != null) {
+                host = host.substring(dot + 1, host.length());
+                dot = host.find(".");
             }
             Graf.text(dc, w / 2, h * 0.87, Graphics.FONT_XTINY, host, 0x5A6B8C);
         }

@@ -148,6 +148,13 @@ class Sync {
         if (code == 200 && Datos.sugerenciasValidas(data)) {
             store("sugerencias", data);
         }
+        request("curiosidades.json", method(:onCuriosidades));
+    }
+
+    function onCuriosidades(code, data) {
+        if (code == 200 && Curiosidad.valid(data)) {
+            store("curiosidades", data);
+        }
         request("entrenos/index.json", method(:onEntrenos));
     }
 

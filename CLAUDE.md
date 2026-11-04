@@ -50,6 +50,12 @@ Cuando el usuario diga que tiene una competición nueva (por ejemplo, «tengo un
 2. Quita los eventos pasados y los que ya están en `docs/retos.json`.
 3. Valida con `tools/validar_sugerencias.py`, haz commit con el mensaje `Sugerencias: ...` y push.
 
+## Curiosidad del día
+
+`docs/curiosidades.json` tiene una curiosidad por día ({fecha, tema, titulo, texto}) que Mi Temporada muestra en «Curiosidad del día». Temas: Espacio, Animales, Historia, Valencia, Cuerpo, Ciencia, Lenguaje, Comida, Tecnología, Geografía, Deporte o Tradición. Título de 26 caracteres como máximo y texto de 180.
+
+Solo datos bien establecidos y comprobables; si algo es una estimación o está en debate, dilo en el texto. Aprovecha las fechas señaladas (festivos, efemérides, solsticios). Al añadir un mes nuevo, borra los días que ya hayan pasado, valida con `tools/validar_curiosidades.py`, haz commit con el mensaje `Curiosidades: <mes>` y push.
+
 ## Entrenos del reloj (Fuerza, Correr libre y series)
 
 Al pulsar una sesión en Semana, Mi Temporada abre un entreno FIT: gym → «Fuerza», rodaje/tirada → «Correr libre», series → lista para elegir. Los entrenos se definen en `tools/entrenos.json`. Para añadir o cambiar una serie, edítalo y ejecuta `python3 tools/generar_entrenos.py`, que regenera `docs/entrenos/*.fit` e `index.json`. Haz commit con el mensaje `Entrenos: ...` y push; la app descarga los nuevos al abrirse. Los nombres deben ser únicos y de menos de 20 caracteres.

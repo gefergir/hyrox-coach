@@ -27,6 +27,8 @@ class TemporadaApp extends Application.AppBase {
         sync.start();
 
         var menu = new WatchUi.Menu2({:title => "Mi Temporada"});
+        var cur = Curiosidad.today();
+        menu.addItem(new WatchUi.MenuItem("Curiosidad del día", cur != null ? cur["titulo"] : null, :curiosidad, {}));
         menu.addItem(new WatchUi.MenuItem("Mascota", null, :mascota, {}));
         menu.addItem(new WatchUi.MenuItem("Semana", null, :semana, {}));
         menu.addItem(new WatchUi.MenuItem("Resumen", "Semana y mes", :resumen, {}));
@@ -45,6 +47,10 @@ class MainMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item) {
         var id = item.getId();
+        if (id == :curiosidad) {
+            WatchUi.pushView(new CuriosidadView(), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_LEFT);
+            return;
+        }
         if (id == :info) {
             WatchUi.pushView(Info.buildMenu(), new SoloLecturaDelegate(), WatchUi.SLIDE_LEFT);
             return;

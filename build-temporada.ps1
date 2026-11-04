@@ -20,6 +20,7 @@ if ($BaseUrl -ne "" -and -not $BaseUrl.EndsWith("/")) { $BaseUrl += "/" }
 Copy-Item (Join-Path $root "docs\agenda.json") (Join-Path $app "resources\agenda_inicial.json") -Force
 Copy-Item (Join-Path $root "docs\retos.json") (Join-Path $app "resources\retos_inicial.json") -Force
 Copy-Item (Join-Path $root "docs\sugerencias.json") (Join-Path $app "resources\sugerencias_inicial.json") -Force
+Copy-Item (Join-Path $root "docs\curiosidades.json") (Join-Path $app "resources\curiosidades_inicial.json") -Force
 
 $config = Join-Path $app "source\Config.mc"
 $original = Get-Content $config -Raw -Encoding UTF8
