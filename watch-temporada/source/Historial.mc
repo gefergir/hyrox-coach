@@ -69,6 +69,34 @@ module Historial {
         return momentDay(Time.now());
     }
 
+    // Número de día -> [año, mes, día] (civil_from_days, H. Hinnant).
+    function civil(dn) {
+        var z = dn + 719468;
+        var era = (z >= 0 ? z : z - 146096) / 146097;
+        var doe = z - era * 146097;
+        var yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+        var doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+        var mp = (5 * doy + 2) / 153;
+        var d = doy - (153 * mp + 2) / 5 + 1;
+        var m = mp < 10 ? mp + 3 : mp - 9;
+        var y = yoe + era * 400 + (m <= 2 ? 1 : 0);
+        return [y, m, d];
+    }
+
+    // Lunes de la semana del día dn.
+    function monday(dn) {
+        return dn - weekday(dn);
+    }
+
+    // "1h 05m" o "45m"
+    function fmtDur(secs) {
+        var mins = secs / 60;
+        if (mins < 60) {
+            return mins + "m";
+        }
+        return (mins / 60) + "h " + (mins % 60).format("%02d") + "m";
+    }
+
     // 0 = lunes ... 6 = domingo.
     function weekday(dn) {
         return ((dn + 3) % 7 + 7) % 7;

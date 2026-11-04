@@ -1,4 +1,7 @@
 using Toybox.Application;
+using Toybox.Attention;
+using Toybox.Math;
+using Toybox.Timer;
 using Toybox.Graphics;
 using Toybox.Lang;
 using Toybox.WatchUi;
@@ -37,6 +40,8 @@ module Mascota {
             ultimo = 0;
         }
         var maxStart = ultimo;
+        var gain = {"gym" => 0, "carrera" => 0, "hyrox" => 0};
+        var gained = false;
         for (var i = 0; i < acts.size(); i++) {
             var a = acts[i];
             if (a["dn"] < inicioDn) {
@@ -48,6 +53,8 @@ module Mascota {
                     p += (a["km"] * PTS_PER_KM).toNumber();
                 }
                 pts[a["cat"]] = pts[a["cat"]] + p;
+                gain[a["cat"]] = gain[a["cat"]] + p;
+                gained = true;
                 if (a["start"] > maxStart) {
                     maxStart = a["start"];
                 }
@@ -58,6 +65,10 @@ module Mascota {
         }
         Application.Storage.setValue("pts", pts);
         Application.Storage.setValue("ultimo", maxStart);
+        // La vista de la mascota lo celebra la próxima vez que se abra.
+        if (gained) {
+            Application.Storage.setValue("ganancia", gain);
+        }
         if (ultimoDia != null) {
             Application.Storage.setValue("ultimoDia", ultimoDia);
         }
@@ -102,8 +113,121 @@ class MascotaView extends WatchUi.View {
     // Puntos de una parte del cuerpo con los que alcanza su músculo máximo.
     const MUSCLE_FULL = 12000.0;
 
+    const ANIM_FRAMES = 90;   // 9 s a 10 fps; luego la pantalla queda quieta
+
+    var frame;
+    var timer;
+    var gain;       // puntos nuevos desde la última vez {gym, carrera, hyrox}
+    var gainTotal;
+    var pose;       // 0 nada, 1 bíceps (gym), 2 trote (carrera), 3 salto (hyrox)
+    var levelUp;
+    var logro;
+    var acc;
+
     function initialize() {
         View.initialize();
+        frame = ANIM_FRAMES;
+        timer = null;
+    }
+
+    function onShow() {
+        var pts = Mascota.points();
+        var lvl = Mascota.level(Mascota.total(pts));
+        var store = Application.Storage;
+
+        gain = store.getValue("ganancia");
+        store.deleteValue("ganancia");
+        pose = 0;
+        gainTotal = 0;
+        if (gain != null) {
+            gainTotal = gain["gym"] + gain["carrera"] + gain["hyrox"];
+            pose = 1;
+            if (gain["carrera"] > gain["gym"] && gain["carrera"] >= gain["hyrox"]) {
+                pose = 2;
+            } else if (gain["hyrox"] > gain["gym"]) {
+                pose = 3;
+            }
+        }
+
+        var seen = store.getValue("nivelVisto");
+        levelUp = seen != null && lvl > seen;
+        store.setValue("nivelVisto", lvl);
+        logro = store.getValue("logroNuevo");
+        store.deleteValue("logroNuevo");
+
+        acc = {};
+        for (var i = 0; i < Logros.LIST.size(); i++) {
+            acc[Logros.LIST[i][0]] = Logros.tiene(Logros.LIST[i][0]);
+        }
+
+        if ((levelUp || logro != null) && (Attention has :vibrate)) {
+            Attention.vibrate([new Attention.VibeProfile(80, 200), new Attention.VibeProfile(0, 100), new Attention.VibeProfile(80, 300)]);
+        }
+        frame = 0;
+        timer = new Timer.Timer();
+        timer.start(method(:onTick), 100, true);
+    }
+
+    function onHide() {
+        if (timer != null) {
+            timer.stop();
+            timer = null;
+        }
+    }
+
+    function onTick() {
+        frame += 1;
+        if (frame >= ANIM_FRAMES && timer != null) {
+            timer.stop();
+            timer = null;
+        }
+        WatchUi.requestUpdate();
+    }
+
+    // Movimiento del fotograma actual, en unidades u.
+    function animState() {
+        var t = frame.toFloat();
+        var an = {
+            "y" => Math.sin(t * 0.3) * 0.12,
+            "liftL" => 0.0,
+            "liftR" => 0.0,
+            "flex" => 0.0,
+            "blink" => frame % 30 >= 28
+        };
+        if (frame < 45) {
+            if (pose == 1) {
+                an["flex"] = Math.sin(t * 0.3).abs();
+            } else if (pose == 2) {
+                var s = Math.sin(t * 0.6);
+                an["liftL"] = s > 0 ? s * 0.9 : 0.0;
+                an["liftR"] = s < 0 ? -s * 0.9 : 0.0;
+                an["y"] = -Math.sin(t * 1.2).abs() * 0.3;
+            } else if (pose == 3) {
+                an["y"] = -Math.sin(t * 0.35).abs() * 1.6;
+            }
+        }
+        return an;
+    }
+
+    // Confeti al subir de nivel y "+puntos" flotando tras un entreno nuevo.
+    function drawEffects(dc) {
+        var w = dc.getWidth();
+        var h = dc.getHeight();
+        if (levelUp && frame < 70) {
+            var colors = [0xFF5C8A, 0xFFD54A, 0x00E5A8, 0x4DA8FF, 0xFFFFFF];
+            for (var i = 0; i < 22; i++) {
+                var x = w * ((i * 37 + 11) % 100) / 100.0;
+                var y = h * (((i * 53 + frame * (3 + i % 4) * 4) % 560) / 1000.0);
+                dc.setColor(colors[i % colors.size()], Graphics.COLOR_TRANSPARENT);
+                dc.fillRectangle(x.toNumber(), y.toNumber(), 4 + i % 3, 6 + i % 2);
+            }
+        }
+        if (gain != null && gainTotal > 0 && frame < 40) {
+            var color = pose == 2 ? COLOR_CARRERA : (pose == 3 ? COLOR_HYROX : COLOR_GYM);
+            dc.setColor(color, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(w * 0.74, h * (0.36 - frame * 0.004), Graphics.FONT_SMALL, "+" + gainTotal,
+                Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        }
     }
 
     function clamp(v) {
@@ -124,14 +248,18 @@ class MascotaView extends WatchUi.View {
     // Osito de dibujo animado. Ocupa siempre lo mismo: lo que cambia es el músculo.
     // Gym muscula brazos y torso, carrera las piernas, hyrox todo el cuerpo.
     // Empieza muy flaquito. En el nivel máximo no cabe y solo se le ven las piernas.
-    function drawPet(dc, pts, lvl, sad) {
+    // an: {y, liftL, liftR, flex, blink} en unidades u; acc: accesorios desbloqueados.
+    function drawPet(dc, pts, lvl, sad, an, acc) {
         var w = dc.getWidth();
         var h = dc.getHeight();
         var mU = clamp((pts["gym"] + pts["hyrox"]) / MUSCLE_FULL);      // brazos y torso
         var mL = clamp((pts["carrera"] + pts["hyrox"]) / MUSCLE_FULL);  // piernas
         var u = w * 0.028 * (lvl >= Mascota.MAX_LEVEL ? 5.0 : 1.0);
         var cx = w / 2.0;
-        var baseY = h * 0.50;
+        var groundY = h * 0.50;
+        var baseY = groundY + an["y"] * u;
+        var liftL = an["liftL"] * u;
+        var liftR = an["liftR"] * u;
         var o = 0.22 * u < 2 ? 2 : 0.22 * u;   // grosor del contorno
 
         var fur = sad ? 0x9FB3C8 : 0xFFB347;
@@ -139,7 +267,9 @@ class MascotaView extends WatchUi.View {
         var belly = sad ? 0xD8E3EE : 0xFFE3B0;
         var muscleLine = sad ? 0xB4C4D6 : 0xF5C98A;
         var pink = sad ? 0xC7A9BC : 0xFF8FA3;
-        var band = sad ? 0x6FA79A : 0x00E5A8;
+        var band = acc["racha4"] == true ? 0xFFD54A : (sad ? 0x6FA79A : 0x00E5A8);
+        var shoe = acc["diez"] == true ? 0xE53935 : furDark;
+        var gold = 0xFFD54A;
 
         // Medidas fijas
         var legH = 2.3 * u;
@@ -153,36 +283,40 @@ class MascotaView extends WatchUi.View {
         var bodyRx = (1.75 + 1.35 * mU) * u;
         var armRx = (0.36 + 0.55 * mU) * u;
         var armRy = 1.7 * u;
-        var bicepR = (0.15 + 0.85 * mU) * u;
+        var bicepR = (0.15 + 0.85 * mU) * u * (1.0 + 0.35 * an["flex"]);
         var handR = (0.55 + 0.4 * mU) * u;
         var armX = bodyRx + 0.25 * u + armRx * 0.4;
+        if (!sad && armX < 3.0 * u + armRx) {
+            armX = 3.0 * u + armRx;   // brazos en alto: que no queden detrás de la cabeza
+        }
         var armCy = sad ? bodyCy + 0.5 * u : bodyCy - 2.2 * u;
         var handCy = sad ? armCy + armRy : armCy - armRy;
         var legX = 0.55 * u + legRx;
 
         // Sombra en el suelo
         dc.setColor(sad ? 0x4C6152 : 0x3F8F4A, Graphics.COLOR_TRANSPARENT);
-        fe(dc, cx, baseY + 0.35 * u, 3.0 * u, 0.55 * u);
+        var shadowK = 1.0 - (groundY - baseY) / (4.0 * u);
+        fe(dc, cx, groundY + 0.35 * u, 3.0 * u * (shadowK < 0.5 ? 0.5 : shadowK), 0.55 * u);
 
         // Silueta: primero todos los contornos y luego los rellenos, para que se fundan.
         var shapes = [
-            [cx - legX, baseY - legH / 2 - 0.3 * u, legRx, legH / 2 + 0.5 * u, furDark],
-            [cx + legX, baseY - legH / 2 - 0.3 * u, legRx, legH / 2 + 0.5 * u, furDark],
-            [cx - legX, baseY - legH * 0.7, legRx * (1.0 + 0.35 * mL), legH * 0.4, furDark],
-            [cx + legX, baseY - legH * 0.7, legRx * (1.0 + 0.35 * mL), legH * 0.4, furDark],
-            [cx - legX - 0.2 * u, baseY - 0.35 * u, 1.05 * u, 0.6 * u, furDark],
-            [cx + legX + 0.2 * u, baseY - 0.35 * u, 1.05 * u, 0.6 * u, furDark],
+            [cx - legX, baseY - legH / 2 - 0.3 * u - liftL, legRx, legH / 2 + 0.5 * u, furDark],
+            [cx + legX, baseY - legH / 2 - 0.3 * u - liftR, legRx, legH / 2 + 0.5 * u, furDark],
+            [cx - legX, baseY - legH * 0.7 - liftL, legRx * (1.0 + 0.35 * mL), legH * 0.4, furDark],
+            [cx + legX, baseY - legH * 0.7 - liftR, legRx * (1.0 + 0.35 * mL), legH * 0.4, furDark],
+            [cx - legX - 0.2 * u, baseY - 0.35 * u - liftL, 1.05 * u, 0.6 * u, shoe],
+            [cx + legX + 0.2 * u, baseY - 0.35 * u - liftR, 1.05 * u, 0.6 * u, shoe],
             [cx - armX, armCy, armRx, armRy, fur],
             [cx + armX, armCy, armRx, armRy, fur],
             [cx - armX - armRx * 0.5, armCy, bicepR, bicepR * 1.1, fur],
             [cx + armX + armRx * 0.5, armCy, bicepR, bicepR * 1.1, fur],
-            [cx - armX, handCy, handR, handR, furDark],
-            [cx + armX, handCy, handR, handR, furDark],
             [cx, bodyCy, bodyRx, bodyRy, fur],
             [cx, bodyCy - 1.7 * u, bodyRx * (1.0 + 0.15 * mU), 1.1 * u, fur],
             [cx - 2.6 * u, headCy - 2.8 * u, 1.15 * u, 1.15 * u, fur],
             [cx + 2.6 * u, headCy - 2.8 * u, 1.15 * u, 1.15 * u, fur],
-            [cx, headCy, headR, headR * 0.93, fur]
+            [cx, headCy, headR, headR * 0.93, fur],
+            [cx - armX, handCy, handR, handR, furDark],
+            [cx + armX, handCy, handR, handR, furDark]
         ];
         dc.setColor(OUTLINE, Graphics.COLOR_TRANSPARENT);
         for (var i = 0; i < shapes.size(); i++) {
@@ -224,6 +358,12 @@ class MascotaView extends WatchUi.View {
         var ey = headCy + 0.2 * u;
         for (var side = -1; side <= 1; side += 2) {
             var ex = cx + side * 1.35 * u;
+            if (an["blink"] && !sad) {
+                dc.setColor(OUTLINE, Graphics.COLOR_TRANSPARENT);
+                dc.setPenWidth(o.toNumber());
+                dc.drawArc(ex.toNumber(), (ey + 0.35 * u).toNumber(), (0.75 * u).toNumber() + 1, Graphics.ARC_COUNTER_CLOCKWISE, 25, 155);
+                continue;
+            }
             dc.setColor(OUTLINE, Graphics.COLOR_TRANSPARENT);
             fe(dc, ex, ey, 0.9 * u + o * 0.7, 1.1 * u + o * 0.7);
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
@@ -274,6 +414,69 @@ class MascotaView extends WatchUi.View {
             dc.setPenWidth((o * 0.7).toNumber() < 1 ? 1 : (o * 0.7).toNumber());
             dc.drawLine((cx - 0.8 * u).toNumber(), my.toNumber(), (cx + 0.8 * u).toNumber(), my.toNumber());
         }
+
+        // --- Accesorios de los logros ---
+        if (acc["primer"] == true) {
+            // Muñequeras
+            var wy = sad ? handCy - handR * 0.95 : handCy + handR * 0.95;
+            dc.setColor(0x00E5A8, Graphics.COLOR_TRANSPARENT);
+            for (var side = -1; side <= 1; side += 2) {
+                var wx = cx + side * armX;
+                dc.fillRoundedRectangle((wx - armRx * 1.25).toNumber(), (wy - 0.25 * u).toNumber(), (armRx * 2.5).toNumber() + 1, (0.5 * u).toNumber() + 1, 2);
+            }
+        }
+        if (acc["cien"] == true) {
+            // Dorsal de carrera en la barriga
+            var dw = 1.8 * u;
+            var dy = bodyCy + 0.4 * u;
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.fillRoundedRectangle((cx - dw / 2).toNumber(), dy.toNumber(), dw.toNumber(), (1.2 * u).toNumber(), 2);
+            dc.setColor(0xE53935, Graphics.COLOR_TRANSPARENT);
+            dc.fillRectangle((cx - dw / 2).toNumber(), dy.toNumber(), dw.toNumber(), (0.25 * u).toNumber() + 1);
+            dc.setColor(0x1A1A1A, Graphics.COLOR_TRANSPARENT);
+            dc.fillRectangle((cx - 0.5 * u).toNumber(), (dy + 0.5 * u).toNumber(), (1.0 * u).toNumber(), (0.18 * u).toNumber() + 1);
+            dc.fillRectangle((cx - 0.5 * u).toNumber(), (dy + 0.8 * u).toNumber(), (0.7 * u).toNumber(), (0.18 * u).toNumber() + 1);
+        }
+        if (acc["hyrox10"] == true) {
+            // Medalla al cuello
+            dc.setColor(0x3D7BFF, Graphics.COLOR_TRANSPARENT);
+            dc.setPenWidth((0.3 * u).toNumber() + 1);
+            dc.drawLine((cx - 1.0 * u).toNumber(), (bodyCy - 2.4 * u).toNumber(), cx.toNumber(), (bodyCy - 1.0 * u).toNumber());
+            dc.drawLine((cx + 1.0 * u).toNumber(), (bodyCy - 2.4 * u).toNumber(), cx.toNumber(), (bodyCy - 1.0 * u).toNumber());
+            dc.setColor(OUTLINE, Graphics.COLOR_TRANSPARENT);
+            fc(dc, cx, bodyCy - 0.6 * u, 0.62 * u + 1);
+            dc.setColor(gold, Graphics.COLOR_TRANSPARENT);
+            fc(dc, cx, bodyCy - 0.6 * u, 0.55 * u);
+        }
+        if (acc["nivel10"] == true) {
+            // Corona
+            var ct = headCy - headR * 0.93;
+            var cw = 1.4 * u;
+            dc.setColor(gold, Graphics.COLOR_TRANSPARENT);
+            dc.fillPolygon([
+                [(cx - cw).toNumber(), (ct + 0.2 * u).toNumber()],
+                [(cx - cw).toNumber(), (ct - 0.9 * u).toNumber()],
+                [(cx - cw / 2).toNumber(), (ct - 0.3 * u).toNumber()],
+                [cx.toNumber(), (ct - 1.2 * u).toNumber()],
+                [(cx + cw / 2).toNumber(), (ct - 0.3 * u).toNumber()],
+                [(cx + cw).toNumber(), (ct - 0.9 * u).toNumber()],
+                [(cx + cw).toNumber(), (ct + 0.2 * u).toNumber()]
+            ]);
+        }
+        if (acc["reto"] == true) {
+            // Trofeo junto a los pies
+            var tx2 = cx + 4.2 * u;
+            var tb = groundY;
+            dc.setColor(gold, Graphics.COLOR_TRANSPARENT);
+            dc.fillPolygon([
+                [(tx2 - 0.9 * u).toNumber(), (tb - 2.4 * u).toNumber()],
+                [(tx2 + 0.9 * u).toNumber(), (tb - 2.4 * u).toNumber()],
+                [(tx2 + 0.3 * u).toNumber(), (tb - 1.2 * u).toNumber()],
+                [(tx2 - 0.3 * u).toNumber(), (tb - 1.2 * u).toNumber()]
+            ]);
+            dc.fillRectangle((tx2 - 0.15 * u).toNumber(), (tb - 1.3 * u).toNumber(), (0.3 * u).toNumber() + 1, (0.8 * u).toNumber());
+            dc.fillRectangle((tx2 - 0.6 * u).toNumber(), (tb - 0.5 * u).toNumber(), (1.2 * u).toNumber(), (0.4 * u).toNumber() + 1);
+        }
         dc.setPenWidth(1);
     }
 
@@ -301,7 +504,7 @@ class MascotaView extends WatchUi.View {
     }
 
     // Cielo en degradado con nubes; gris y con lluvia si está triste.
-    function drawSky(dc, sad) {
+    function drawSky(dc, sad, frame) {
         var w = dc.getWidth();
         var h = dc.getHeight();
         var top = sad ? 0x2E3440 : 0x1F3B73;
@@ -331,7 +534,7 @@ class MascotaView extends WatchUi.View {
             dc.setPenWidth(2);
             for (var i = 0; i < 5; i++) {
                 var x = w * (0.18 + i * 0.03);
-                var y = h * (0.29 + (i % 2) * 0.03);
+                var y = h * (0.28 + ((i * 17 + frame * 12) % 90) / 1000.0);
                 dc.drawLine(x.toNumber(), y.toNumber(), (x - w * 0.01).toNumber(), (y + h * 0.035).toNumber());
             }
             dc.setPenWidth(1);
@@ -367,15 +570,28 @@ class MascotaView extends WatchUi.View {
         var sad = Mascota.isSad();
         var center = Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER;
 
-        drawSky(dc, sad);
+        if (acc == null) {
+            acc = {};
+        }
+        drawSky(dc, sad, frame);
         drawHill(dc, sad);
-        drawPet(dc, pts, lvl, sad);
+        drawPet(dc, pts, lvl, sad, animState(), acc);
+        drawEffects(dc);
         dc.setColor(0x14213D, Graphics.COLOR_TRANSPARENT);
         dc.fillRectangle(0, (h * 0.555).toNumber(), w, h);
 
         // Mensaje
         dc.setColor(sad ? 0xB4C4D6 : Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(w / 2, h * 0.575, Graphics.FONT_XTINY, mood(sad, lvl), center);
+        var msg = mood(sad, lvl);
+        if (levelUp && frame < 70) {
+            msg = "¡Subo al nivel " + lvl + "!";
+        } else if (logro != null && frame < 70) {
+            msg = "¡Logro: " + logro + "!";
+        } else if (gain != null && gainTotal > 0 && frame < 60) {
+            msg = "+" + gainTotal + " puntos. ¡Gracias!";
+        }
+        dc.drawText(w / 2, h * 0.575, Graphics.FONT_XTINY,
+            Graphics.fitTextToArea(msg, Graphics.FONT_XTINY, w * 0.84, dc.getFontHeight(Graphics.FONT_XTINY), true), center);
 
         // Barra de nivel: "Nivel 8 [=====    ] 9"
         var barW = w * 0.46;

@@ -15,7 +15,9 @@ module Info {
             ["Sube de nivel", "Barra verde: lo que falta"],
             ["Nunca encoge", "Los puntos no se pierden"],
             ["5 días sin entrenar", "Se pone triste"],
-            ["Nivel 15", "¡Ya no cabe en pantalla!"]
+            ["Nivel 15", "¡Ya no cabe en pantalla!"],
+            ["Semana: pulsa sesión", "Abre Hyrox o tu entreno"],
+            ["Entrenos de Garmin", "Llámalos Series, Empuje..."]
         ];
         var menu = new WatchUi.Menu2({:title => "Info"});
         for (var i = 0; i < lines.size(); i++) {

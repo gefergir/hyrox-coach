@@ -32,6 +32,34 @@ module Datos {
         return retosValidos(stored) ? stored : WatchUi.loadResource(Rez.JsonData.RetosInicial);
     }
 
+    // Datos que lee la vista rápida (que no puede cargar los JSON ni el historial).
+    function saveGlance(lvl) {
+        var agendaDias = {};
+        var dias = agenda()["dias"];
+        for (var i = 0; i < dias.size(); i++) {
+            var ses = dias[i]["sesiones"];
+            if (ses.size() > 0) {
+                var text = Semana.tipoLabel(ses[0]["tipo"]) + " · " + ses[0]["detalle"];
+                if (ses.size() > 1) {
+                    text = Semana.tipoLabel(ses[0]["tipo"]) + " + " + Semana.tipoLabel(ses[1]["tipo"]);
+                }
+                agendaDias[Historial.parseDate(dias[i]["fecha"])] = text;
+            }
+        }
+        var items = Retos.ordered();
+        var retosList = [];
+        for (var i = 0; i < items.size(); i++) {
+            retosList.add([items[i]["dn"], items[i]["reto"]["nombre"]]);
+        }
+        var last = Application.Storage.getValue("ultimoDia");
+        Application.Storage.setValue("glance", {
+            "nivel" => lvl,
+            "ultimoDia" => last != null ? last : Historial.parseDate(Mascota.INICIO),
+            "agenda" => agendaDias,
+            "retos" => retosList
+        });
+    }
+
     // Sesiones de la agenda cruzadas con el historial:
     // [{dn, tipo, detalle, cat, hecho}], ordenadas por día.
     // Cada actividad del día cubre como mucho una sesión de su categoría.
