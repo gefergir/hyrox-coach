@@ -15,6 +15,14 @@ module Graf {
     const GOLD = 0xFFC93C;
     const CENTER = 4 | 1; // TEXT_JUSTIFY_VCENTER | TEXT_JUSTIFY_CENTER
 
+    // Mezcla dos colores RGB: t = 0 -> a, t = 1 -> b.
+    function mixColor(a, b, t) {
+        var r = ((a >> 16) & 0xFF) + ((((b >> 16) & 0xFF) - ((a >> 16) & 0xFF)) * t).toNumber();
+        var g = ((a >> 8) & 0xFF) + ((((b >> 8) & 0xFF) - ((a >> 8) & 0xFF)) * t).toNumber();
+        var bl = (a & 0xFF) + (((b & 0xFF) - (a & 0xFF)) * t).toNumber();
+        return (r << 16) | (g << 8) | bl;
+    }
+
     function catColor(cat) {
         if (Historial.CAT_GYM.equals(cat)) {
             return GYM;

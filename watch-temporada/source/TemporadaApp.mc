@@ -32,6 +32,7 @@ class TemporadaApp extends Application.AppBase {
         menu.addItem(new WatchUi.MenuItem("Mascota", null, :mascota, {}));
         menu.addItem(new WatchUi.MenuItem("Semana", null, :semana, {}));
         menu.addItem(new WatchUi.MenuItem("Resumen", "Semana y mes", :resumen, {}));
+        menu.addItem(new WatchUi.MenuItem("Estadísticas", "Carga, eficiencia, hábitos", :estadisticas, {}));
         menu.addItem(new WatchUi.MenuItem("Retos", null, :retos, {}));
         menu.addItem(new WatchUi.MenuItem("Logros", null, :logros, {}));
         menu.addItem(new WatchUi.MenuItem("Sugerencias", null, :sugerencias, {}));
@@ -47,6 +48,11 @@ class MainMenuDelegate extends WatchUi.Menu2InputDelegate {
 
     function onSelect(item) {
         var id = item.getId();
+        if (id == :estadisticas) {
+            var ev = new EstadisticasView();
+            WatchUi.pushView(ev, new PagerDelegate(ev), WatchUi.SLIDE_LEFT);
+            return;
+        }
         if (id == :curiosidad) {
             WatchUi.pushView(new CuriosidadView(), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_LEFT);
             return;

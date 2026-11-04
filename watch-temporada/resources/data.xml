@@ -3,4 +3,5 @@
     <jsonData id="RetosInicial" filename="retos_inicial.json"/>
     <jsonData id="SugerenciasInicial" filename="sugerencias_inicial.json"/>
     <jsonData id="CuriosidadesIniciales" filename="curiosidades_inicial.json"/>
+    <jsonData id="Stats" filename="stats.json"/>
 </resources>

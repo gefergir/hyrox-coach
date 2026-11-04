@@ -22,6 +22,12 @@ Copy-Item (Join-Path $root "docs\retos.json") (Join-Path $app "resources\retos_i
 Copy-Item (Join-Path $root "docs\sugerencias.json") (Join-Path $app "resources\sugerencias_inicial.json") -Force
 Copy-Item (Join-Path $root "docs\curiosidades.json") (Join-Path $app "resources\curiosidades_inicial.json") -Force
 
+# Estadísticas privadas (pulso, carga): se generan con tools/analisis.py a partir de los FIT del
+# reloj y van dentro de la app, nunca en GitHub. Sin análisis, la app muestra un aviso.
+$stats = Join-Path $app "resources\stats.json"
+$statsSrc = Join-Path $env:USERPROFILE "Documents\hyrox-datos\stats_reloj.json"
+if (Test-Path $statsSrc) { Copy-Item $statsSrc $stats -Force } elseif (-not (Test-Path $stats)) { Set-Content -Path $stats -Value "{}" -Encoding ascii }
+
 $config = Join-Path $app "source\Config.mc"
 $original = Get-Content $config -Raw -Encoding UTF8
 try {

@@ -3,3 +3,4 @@ developer_key
 *.der
 *.pem
 watch-temporada/bin/
+watch-temporada/resources/stats.json
