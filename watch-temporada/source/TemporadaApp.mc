@@ -61,12 +61,14 @@ class MainMenuDelegate extends WatchUi.Menu2InputDelegate {
         if (id == :semana) {
             WatchUi.pushView(Semana.buildMenu(acts), new SemanaDelegate(Datos.sesiones(acts)), WatchUi.SLIDE_LEFT);
         } else if (id == :resumen) {
-            WatchUi.pushView(Resumen.buildMenu(acts), new SoloLecturaDelegate(), WatchUi.SLIDE_LEFT);
+            var rv = new ResumenView(acts);
+            WatchUi.pushView(rv, new PagerDelegate(rv), WatchUi.SLIDE_LEFT);
         } else if (id == :retos) {
             WatchUi.pushView(Retos.buildMenu(acts), new RetosDelegate(acts), WatchUi.SLIDE_LEFT);
         } else if (id == :logros) {
             var lvl = Mascota.level(Mascota.total(Mascota.points()));
-            WatchUi.pushView(Logros.buildMenu(acts, lvl), new SoloLecturaDelegate(), WatchUi.SLIDE_LEFT);
+            var lv = new LogrosView(acts, lvl);
+            WatchUi.pushView(lv, new PagerDelegate(lv), WatchUi.SLIDE_LEFT);
         }
     }
 }

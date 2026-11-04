@@ -148,6 +148,47 @@ class Sync {
         if (code == 200 && Datos.sugerenciasValidas(data)) {
             store("sugerencias", data);
         }
+        request("entrenos/index.json", method(:onEntrenos));
+    }
+
+    // Entrenos FIT (Fuerza, Correr libre, series): descarga los que el reloj aún no tiene.
+    var pending;
+
+    function onEntrenos(code, data) {
+        if (code != 200 || !(data instanceof Lang.Dictionary) || !(data["entrenos"] instanceof Lang.Array)) {
+            return;
+        }
+        store("entrenosIndex", data);
+        var have = Lanzar.appWorkouts();
+        pending = [];
+        var list = data["entrenos"];
+        for (var i = 0; i < list.size(); i++) {
+            if (have[list[i]["nombre"]] == null) {
+                pending.add(list[i]["archivo"]);
+            }
+        }
+        nextFit();
+    }
+
+    function nextFit() {
+        if (pending == null || pending.size() == 0) {
+            return;
+        }
+        var file = pending[0];
+        pending = pending.slice(1, null);
+        Communications.makeWebRequest(
+            Config.BASE_URL + file,
+            null,
+            {
+                :method => Communications.HTTP_REQUEST_METHOD_GET,
+                :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_FIT
+            },
+            method(:onFit)
+        );
+    }
+
+    function onFit(code, data) {
+        nextFit();
     }
 
     function store(key, data) {

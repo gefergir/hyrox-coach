@@ -1,0 +1,49 @@
+{
+  "entrenos": [
+    {
+      "nombre": "Fuerza",
+      "tipo": "fuerza",
+      "archivo": "entrenos/fuerza.fit"
+    },
+    {
+      "nombre": "Correr libre",
+      "tipo": "correr",
+      "archivo": "entrenos/correr.fit"
+    },
+    {
+      "nombre": "Series 10x200",
+      "tipo": "series",
+      "archivo": "entrenos/s10x200.fit"
+    },
+    {
+      "nombre": "Series 8x400",
+      "tipo": "series",
+      "archivo": "entrenos/s8x400.fit"
+    },
+    {
+      "nombre": "Series 6x800",
+      "tipo": "series",
+      "archivo": "entrenos/s6x800.fit"
+    },
+    {
+      "nombre": "Series 5x1000",
+      "tipo": "series",
+      "archivo": "entrenos/s5x1000.fit"
+    },
+    {
+      "nombre": "Series 4x1500",
+      "tipo": "series",
+      "archivo": "entrenos/s4x1500.fit"
+    },
+    {
+      "nombre": "Series 3x2000",
+      "tipo": "series",
+      "archivo": "entrenos/s3x2000.fit"
+    },
+    {
+      "nombre": "Fartlek 10x1'",
+      "tipo": "series",
+      "archivo": "entrenos/fartlek.fit"
+    }
+  ]
+}

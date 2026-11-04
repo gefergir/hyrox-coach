@@ -1,0 +1,14 @@
+{
+  "nota": "Catálogo de entrenos que Mi Temporada descarga al reloj. Para añadir una serie, añádela aquí y ejecuta: python3 tools/generar_entrenos.py",
+  "entrenos": [
+    { "id": "fuerza", "nombre": "Fuerza", "tipo": "fuerza" },
+    { "id": "correr", "nombre": "Correr libre", "tipo": "correr" },
+    { "id": "s10x200", "nombre": "Series 10x200", "tipo": "series", "reps": 10, "metros": 200, "recuperacion_s": 60 },
+    { "id": "s8x400", "nombre": "Series 8x400", "tipo": "series", "reps": 8, "metros": 400, "recuperacion_s": 90 },
+    { "id": "s6x800", "nombre": "Series 6x800", "tipo": "series", "reps": 6, "metros": 800, "recuperacion_s": 120 },
+    { "id": "s5x1000", "nombre": "Series 5x1000", "tipo": "series", "reps": 5, "metros": 1000, "recuperacion_s": 120 },
+    { "id": "s4x1500", "nombre": "Series 4x1500", "tipo": "series", "reps": 4, "metros": 1500, "recuperacion_s": 150 },
+    { "id": "s3x2000", "nombre": "Series 3x2000", "tipo": "series", "reps": 3, "metros": 2000, "recuperacion_s": 180 },
+    { "id": "fartlek", "nombre": "Fartlek 10x1'", "tipo": "series", "reps": 10, "segundos": 60, "recuperacion_s": 60 }
+  ]
+}
