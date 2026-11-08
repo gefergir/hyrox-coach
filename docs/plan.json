@@ -331,12 +331,16 @@
           },
           "descanso_s": null,
           "ejercicios": [
-            "700 m Run juntos + 1 estación por ronda",
-            "R1: 40 cal Row o Ski",
-            "R2: 80 m Sled Push",
-            "R3: 80 m Sled Pull",
-            "R4: 60 Wall Balls",
-            "R5: 50 Sit Ups"
+            "700 m Run juntos",
+            "40 cal Row o Ski",
+            "700 m Run juntos",
+            "80 m Sled Push",
+            "700 m Run juntos",
+            "80 m Sled Pull",
+            "700 m Run juntos",
+            "60 Wall Balls",
+            "700 m Run juntos",
+            "50 Sit Ups"
           ]
         }
       ]
