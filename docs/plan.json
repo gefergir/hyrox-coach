@@ -1,7 +1,7 @@
 {
   "semana": 45,
   "desde": "2026-11-02",
-  "hasta": "2026-11-06",
+  "hasta": "2026-11-08",
   "origen": "Imagen del plan semanal de Hyrox Training Club",
   "criterio_cargas": "Cuando el plan indica hombre/mujer (12/10 cal), se usa el valor de hombre",
   "sesiones": [
@@ -315,7 +315,34 @@
           ]
         }
       ]
+    },
+    {
+      "dia": "domingo",
+      "fecha": "2026-11-08",
+      "nombre": "5 rondas for time",
+      "parejas": true,
+      "bloques": [
+        {
+          "nombre": "5 rondas for time",
+          "timer": {
+            "tipo": "cuenta_atras",
+            "duracion_s": 2700,
+            "contar_rondas": true
+          },
+          "descanso_s": null,
+          "ejercicios": [
+            "700 m Run juntos + 1 estación por ronda",
+            "R1: 40 cal Row o Ski",
+            "R2: 80 m Sled Push",
+            "R3: 80 m Sled Pull",
+            "R4: 60 Wall Balls",
+            "R5: 50 Sit Ups"
+          ]
+        }
+      ]
     }
   ],
-  "dudas": []
+  "dudas": [
+    "Domingo: 'for time' sin crono hacia arriba; cuenta atrás de 45' como tope, a petición del usuario. Thrusters cambiados por 50 Sit Ups y movidos a la última ronda."
+  ]
 }
