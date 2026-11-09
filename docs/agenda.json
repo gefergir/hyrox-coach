@@ -1,42 +1,14 @@
 {
-  "semana": 45,
-  "desde": "2026-11-02",
-  "hasta": "2026-11-08",
+  "semana": 46,
+  "desde": "2026-11-09",
+  "hasta": "2026-11-15",
   "dias": [
-    {
-      "fecha": "2026-11-04",
-      "dia": "miercoles",
-      "sesiones": [
-        { "tipo": "gym", "detalle": "Empuje" }
-      ]
-    },
-    {
-      "fecha": "2026-11-05",
-      "dia": "jueves",
-      "sesiones": [
-        { "tipo": "series", "detalle": "Series" }
-      ]
-    },
-    {
-      "fecha": "2026-11-06",
-      "dia": "viernes",
-      "sesiones": [
-        { "tipo": "hyrox", "detalle": "Sesión de Hyrox" }
-      ]
-    },
-    {
-      "fecha": "2026-11-07",
-      "dia": "sabado",
-      "sesiones": [
-        { "tipo": "gym", "detalle": "Pierna" }
-      ]
-    },
-    {
-      "fecha": "2026-11-08",
-      "dia": "domingo",
-      "sesiones": [
-        { "tipo": "hyrox", "detalle": "Hyrox personalizado (tarde)" }
-      ]
-    }
+    {"fecha": "2026-11-09", "dia": "lunes", "sesiones": [{"tipo": "gym", "detalle": "Espalda"}]},
+    {"fecha": "2026-11-10", "dia": "martes", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
+    {"fecha": "2026-11-11", "dia": "miercoles", "sesiones": [{"tipo": "series", "detalle": "Series"}]},
+    {"fecha": "2026-11-12", "dia": "jueves", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
+    {"fecha": "2026-11-13", "dia": "viernes", "sesiones": [{"tipo": "gym", "detalle": "Empuje"}]},
+    {"fecha": "2026-11-14", "dia": "sabado", "sesiones": [{"tipo": "gym", "detalle": "Pierna"}]},
+    {"fecha": "2026-11-15", "dia": "domingo", "sesiones": [{"tipo": "rodaje", "detalle": "Run"}]}
   ]
 }
