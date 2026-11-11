@@ -64,6 +64,13 @@ class SimView extends WatchUi.View {
     var segDist;     // distancia (m) al empezar el tramo
     var result;      // texto del final
     var record;
+    var segs;        // tramos para el resumen
+    var segRunMs;
+    var segRunDist;
+    var lastTickAt;
+    var lastDist;
+    var summary;
+    var donePage;
 
     function initialize() {
         View.initialize();
@@ -78,6 +85,13 @@ class SimView extends WatchUi.View {
         segDist = 0.0;
         result = "";
         record = false;
+        segs = [];
+        segRunMs = 0;
+        segRunDist = 0.0;
+        lastTickAt = 0;
+        lastDist = 0.0;
+        summary = null;
+        donePage = 0;
         $.gPlayer = self;
     }
 
@@ -94,7 +108,22 @@ class SimView extends WatchUi.View {
     }
 
     function onTick() {
+        if (state == RUNNING) {
+            var now = System.getTimer();
+            var r = ResumenEntreno.sample(Simulacro.TRAMOS[idx][1], now - lastTickAt, lastDist);
+            segRunMs += r[0];
+            segRunDist += r[1];
+            lastDist = r[2];
+            lastTickAt = now;
+        }
         WatchUi.requestUpdate();
+    }
+
+    function recordSeg(ms) {
+        var tramo = Simulacro.TRAMOS[idx];
+        segs.add({"n" => tramo[0], "ms" => ms, "run" => tramo[1], "rest" => false, "rms" => segRunMs, "rd" => segRunDist});
+        segRunMs = 0;
+        segRunDist = 0.0;
     }
 
     function onPosition(info) {
@@ -125,6 +154,8 @@ class SimView extends WatchUi.View {
         segStart = 0;
         segDist = 0.0;
         runStart = System.getTimer();
+        lastTickAt = runStart;
+        lastDist = 0.0;
         state = RUNNING;
         vibrate(500);
     }
@@ -133,6 +164,7 @@ class SimView extends WatchUi.View {
     function nextSegment() {
         var now = active();
         splits.add(now - segStart);
+        recordSeg(now - segStart);
         field.setData(Simulacro.TRAMOS[idx][0]);
         session.addLap();
         segStart = now;
@@ -159,6 +191,8 @@ class SimView extends WatchUi.View {
     function resume() {
         session.start();
         runStart = System.getTimer();
+        lastTickAt = runStart;
+        lastDist = ResumenEntreno.distance();
         state = RUNNING;
     }
 
@@ -182,7 +216,19 @@ class SimView extends WatchUi.View {
                 result = "Récord: " + Simulacro.fmt(b["total"]) + " (" + Simulacro.fmtDelta(total - b["total"]) + ")";
             }
         }
+        if (!complete && idx < Simulacro.TRAMOS.size() && total - segStart > 1000) {
+            recordSeg(total - segStart);
+        }
+        summary = ResumenEntreno.build("Simulacro HYROX", result, total, segs);
+        donePage = 0;
         vibrate(1000);
+    }
+
+    function onUpDown(delta) {
+        if (state == DONE && summary != null) {
+            donePage = (donePage + delta + ResumenEntreno.PAGES) % ResumenEntreno.PAGES;
+            WatchUi.requestUpdate();
+        }
     }
 
     function discard() {
@@ -265,6 +311,10 @@ class SimView extends WatchUi.View {
             text(dc, h * 0.78, Graphics.FONT_XTINY, "START para empezar", white);
             return;
         }
+        if (state == DONE && summary != null) {
+            ResumenEntreno.draw(dc, summary, donePage);
+            return;
+        }
         if (state == DONE) {
             text(dc, h * 0.25, Graphics.FONT_SMALL, result.length() > 0 ? Graphics.fitTextToArea(result, Graphics.FONT_SMALL, dc.getWidth() * 0.8, dc.getFontHeight(Graphics.FONT_SMALL) * 2, true) : "", record ? 0xFFC93C : 0x00E5A8);
             text(dc, h * 0.45, Graphics.FONT_NUMBER_MEDIUM, Simulacro.fmt(accum), white);
@@ -319,6 +369,10 @@ class SimDelegate extends WatchUi.InputDelegate {
             view.onStartKey();
         } else if (key == WatchUi.KEY_ESC || key == WatchUi.KEY_LAP) {
             view.onLapKey();
+        } else if (key == WatchUi.KEY_UP) {
+            view.onUpDown(-1);
+        } else if (key == WatchUi.KEY_DOWN) {
+            view.onUpDown(1);
         }
         return true;
     }

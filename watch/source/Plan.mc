@@ -75,7 +75,12 @@ module Plan {
 
     // true si el texto es un ejercicio de carrera ("250 m Run", "Run juntos").
     function isRun(text) {
-        return text != null && (" " + text.toLower() + " ").find(" run ") != null;
+        if (text == null) {
+            return false;
+        }
+        var t = " " + text.toLower() + " ";
+        // Un shuttle run (idas y vueltas de 10 m) no es carrera continua.
+        return t.find(" run ") != null && t.find("shuttle") == null;
     }
 
     function anyRun(list) {

@@ -38,6 +38,16 @@ class PlayerView extends WatchUi.View {
     var workMarked; // En un intervalo, LAP ya marcó el final del trabajo
     var warned;     // Ya se avisó de que quedan 3 segundos
 
+    // Resumen: tramos cerrados y rato corriendo del tramo actual
+    var segs;
+    var lastLapAt;  // ms activos al cerrar el último tramo
+    var segRunMs;
+    var segRunDist;
+    var lastTickAt;
+    var lastDist;
+    var summary;
+    var donePage;
+
     function initialize(aSesion) {
         View.initialize();
         sesion = aSesion;
@@ -56,6 +66,14 @@ class PlayerView extends WatchUi.View {
         runStart = 0;
         stepStart = 0;
         resetStepMarks();
+        segs = [];
+        lastLapAt = 0;
+        segRunMs = 0;
+        segRunDist = 0.0;
+        lastTickAt = 0;
+        lastDist = 0.0;
+        summary = null;
+        donePage = 0;
         $.gPlayer = self;
     }
 
@@ -97,6 +115,15 @@ class PlayerView extends WatchUi.View {
     }
 
     function onTick() {
+        // Rato corriendo: solo en ejercicios de carrera y con el GPS a ritmo de correr.
+        if (state == $.ST_RUNNING) {
+            var now = System.getTimer();
+            var r = ResumenEntreno.sample(showPace(steps[idx]), now - lastTickAt, lastDist);
+            segRunMs += r[0];
+            segRunDist += r[1];
+            lastDist = r[2];
+            lastTickAt = now;
+        }
         // El bucle recupera los pasos vencidos si la vista estuvo oculta.
         while (state == $.ST_RUNNING && stepLeftMs() <= 0) {
             autoAdvance();
@@ -145,6 +172,8 @@ class PlayerView extends WatchUi.View {
         accumMs = 0;
         stepStart = 0;
         runStart = System.getTimer();
+        lastTickAt = runStart;
+        lastDist = ResumenEntreno.distance();
         state = $.ST_RUNNING;
         vibrate(500);
     }
@@ -159,6 +188,8 @@ class PlayerView extends WatchUi.View {
     function resume() {
         session.start();
         runStart = System.getTimer();
+        lastTickAt = runStart;
+        lastDist = ResumenEntreno.distance();
         state = $.ST_RUNNING;
     }
 
@@ -171,7 +202,42 @@ class PlayerView extends WatchUi.View {
         WatchUi.pushView(menu, new PauseMenuDelegate(self), WatchUi.SLIDE_UP);
     }
 
+    // Nombre del tramo para el resumen: el ejercicio, el turno o el bloque.
+    function segName(step) {
+        if (step["kind"] == $.KIND_REST) {
+            return "Descanso";
+        }
+        var ex = currentExercise(step);
+        if (ex != null && !(step["kind"] == $.KIND_INTERVAL && workMarked) && !step["amrap"]) {
+            return ex;
+        }
+        var lines = stepLines(step);
+        if (step["data"] != null && step["data"]["roles"] != null && lines.size() > 0) {
+            return lines[0];
+        }
+        return step["name"];
+    }
+
+    // Guarda el tramo que se cierra ahora (antes de avanzar de ejercicio o de paso).
+    function recordSeg() {
+        var step = steps[idx];
+        var now = activeMs();
+        var rest = step["kind"] == $.KIND_REST || (step["kind"] == $.KIND_INTERVAL && workMarked);
+        segs.add({
+            "n" => segName(step),
+            "ms" => now - lastLapAt,
+            "run" => showPace(step),
+            "rest" => rest,
+            "rms" => segRunMs,
+            "rd" => segRunDist
+        });
+        lastLapAt = now;
+        segRunMs = 0;
+        segRunDist = 0.0;
+    }
+
     function writeLap(label) {
+        recordSeg();
         if (label.length() > 28) {
             label = label.substring(0, 28);
         }
@@ -249,6 +315,12 @@ class PlayerView extends WatchUi.View {
 
     function finish(text) {
         accumMs = activeMs();
+        // Tramo a medias (al guardar desde la pausa)
+        if (accumMs - lastLapAt > 1000) {
+            recordSeg();
+        }
+        summary = ResumenEntreno.build(sesion["nombre"], text, accumMs, segs);
+        donePage = 0;
         state = $.ST_DONE;
         if (session.isRecording()) {
             session.stop();
@@ -348,6 +420,11 @@ class PlayerView extends WatchUi.View {
 
     // UP/DOWN antes de empezar: elige el bloque inicial.
     function onUpDown(delta) {
+        if (state == $.ST_DONE && summary != null) {
+            donePage = (donePage + delta + ResumenEntreno.PAGES) % ResumenEntreno.PAGES;
+            WatchUi.requestUpdate();
+            return;
+        }
         if (state != $.ST_READY) {
             return;
         }
@@ -494,6 +571,10 @@ class PlayerView extends WatchUi.View {
     }
 
     function drawDone(dc, h) {
+        if (summary != null) {
+            ResumenEntreno.draw(dc, summary, donePage);
+            return;
+        }
         drawCentered(dc, h * 0.34, Graphics.FONT_MEDIUM, doneText, 0x00E5A8);
         drawCentered(dc, h * 0.50, Graphics.FONT_NUMBER_MEDIUM, formatSecs(accumMs / 1000), Graphics.COLOR_WHITE);
         drawCentered(dc, h * 0.70, Graphics.FONT_XTINY, "START para salir", Graphics.COLOR_LT_GRAY);
