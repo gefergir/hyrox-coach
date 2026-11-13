@@ -7,7 +7,7 @@
     {"fecha": "2026-11-10", "dia": "martes", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
     {"fecha": "2026-11-11", "dia": "miercoles", "sesiones": [{"tipo": "gym", "detalle": "Empuje"}]},
     {"fecha": "2026-11-12", "dia": "jueves", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
-    {"fecha": "2026-11-13", "dia": "viernes", "sesiones": [{"tipo": "series", "detalle": "Series"}]},
+    {"fecha": "2026-11-13", "dia": "viernes", "sesiones": [{"tipo": "series", "detalle": "8x400m"}]},
     {"fecha": "2026-11-14", "dia": "sabado", "sesiones": [{"tipo": "gym", "detalle": "Pierna"}]},
     {"fecha": "2026-11-15", "dia": "domingo", "sesiones": [{"tipo": "rodaje", "detalle": "Run"}]}
   ]
