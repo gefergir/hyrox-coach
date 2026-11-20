@@ -7,6 +7,12 @@
       "distancia_km": 6
     },
     {
+      "nombre": "Sant Roquense 5K (Museros)",
+      "fecha": "2027-01-16",
+      "tipo": "carrera",
+      "distancia_km": 5
+    },
+    {
       "nombre": "Media Maratón de Santa Pola",
       "fecha": "2027-01-24",
       "tipo": "carrera",
