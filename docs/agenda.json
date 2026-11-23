@@ -1,13 +1,16 @@
 {
-  "semana": 47,
-  "desde": "2026-11-16",
-  "hasta": "2026-11-22",
+  "semana": 48,
+  "desde": "2026-11-23",
+  "hasta": "2026-11-29",
   "dias": [
-    {"fecha": "2026-11-17", "dia": "martes", "sesiones": [{"tipo": "rodaje", "detalle": "Run 7 km"}]},
-    {"fecha": "2026-11-18", "dia": "miercoles", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
-    {"fecha": "2026-11-19", "dia": "jueves", "sesiones": [{"tipo": "gym", "detalle": "Espalda"}]},
-    {"fecha": "2026-11-20", "dia": "viernes", "sesiones": [{"tipo": "series", "detalle": "Series"}]},
-    {"fecha": "2026-11-21", "dia": "sabado", "sesiones": [{"tipo": "gym", "detalle": "Pecho"}]},
-    {"fecha": "2026-11-22", "dia": "domingo", "sesiones": [{"tipo": "rodaje", "detalle": "Carrera 6 km Valencia"}]}
+    {"fecha": "2026-11-23", "dia": "lunes", "sesiones": [{"tipo": "gym", "detalle": "Pierna"}]},
+    {"fecha": "2026-11-24", "dia": "martes", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
+    {"fecha": "2026-11-25", "dia": "miercoles", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
+    {"fecha": "2026-11-26", "dia": "jueves", "sesiones": [
+      {"tipo": "series", "detalle": "Series"},
+      {"tipo": "gym", "detalle": "Espalda"}
+    ]},
+    {"fecha": "2026-11-28", "dia": "sabado", "sesiones": [{"tipo": "tirada", "detalle": "10 km (12-14 si puedes)"}]},
+    {"fecha": "2026-11-29", "dia": "domingo", "sesiones": [{"tipo": "gym", "detalle": "Empuje"}]}
   ]
 }
