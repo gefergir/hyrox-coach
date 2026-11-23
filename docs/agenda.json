@@ -4,12 +4,9 @@
   "hasta": "2026-11-29",
   "dias": [
     {"fecha": "2026-11-23", "dia": "lunes", "sesiones": [{"tipo": "gym", "detalle": "Pierna"}]},
-    {"fecha": "2026-11-24", "dia": "martes", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
+    {"fecha": "2026-11-24", "dia": "martes", "sesiones": [{"tipo": "series", "detalle": "Series"}]},
     {"fecha": "2026-11-25", "dia": "miercoles", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
-    {"fecha": "2026-11-26", "dia": "jueves", "sesiones": [
-      {"tipo": "series", "detalle": "Series"},
-      {"tipo": "gym", "detalle": "Espalda"}
-    ]},
+    {"fecha": "2026-11-26", "dia": "jueves", "sesiones": [{"tipo": "hyrox", "detalle": "Hyrox"}]},
     {"fecha": "2026-11-28", "dia": "sabado", "sesiones": [{"tipo": "tirada", "detalle": "10 km (12-14 si puedes)"}]},
     {"fecha": "2026-11-29", "dia": "domingo", "sesiones": [{"tipo": "gym", "detalle": "Empuje"}]}
   ]
