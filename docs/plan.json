@@ -1,149 +1,17 @@
 {
-  "semana": 47,
-  "desde": "2026-11-16",
-  "hasta": "2026-11-20",
+  "semana": 48,
+  "desde": "2026-11-23",
+  "hasta": "2026-11-27",
   "origen": "Imagen del plan semanal de Hyrox Training Club",
   "criterio_cargas": "Cuando el plan indica hombre/mujer (12/10 cal), se usa el valor de hombre",
   "sesiones": [
     {
       "dia": "lunes",
-      "fecha": "2026-11-16",
-      "nombre": "E2MOM 6' x 5 zonas",
+      "fecha": "2026-11-23",
+      "nombre": "AMRAP 8' x 4 zonas",
       "bloques": [
         {
           "nombre": "Zona 1",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 3
-          },
-          "descanso_s": 90,
-          "ejercicios": [
-            "12 Cal Echo",
-            "8 Burpees Over Line"
-          ]
-        },
-        {
-          "nombre": "Zona 2",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 3
-          },
-          "descanso_s": 90,
-          "ejercicios": [
-            "12 Sandbag Deadlift",
-            "20 m Sandbag Shoulder Carry"
-          ]
-        },
-        {
-          "nombre": "Zona 3",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 3
-          },
-          "descanso_s": 90,
-          "ejercicios": [
-            "12 Cal Row",
-            "10 Box Step Overs"
-          ]
-        },
-        {
-          "nombre": "Zona 4",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 3
-          },
-          "descanso_s": 90,
-          "ejercicios": [
-            "12 KB Sumo Deadlift High Pull",
-            "10/10 KB Front Rack March"
-          ]
-        },
-        {
-          "nombre": "Zona 5",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 3
-          },
-          "descanso_s": 0,
-          "ejercicios": [
-            "200 m Run",
-            "12 Air Squats"
-          ]
-        }
-      ]
-    },
-    {
-      "dia": "martes",
-      "fecha": "2026-11-17",
-      "nombre": "Every 2' x 4 + 8' Run (x2)",
-      "bloques": [
-        {
-          "nombre": "Every 2' x 4 (A)",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 4
-          },
-          "descanso_s": null,
-          "ejercicios": [
-            "8 D Db Front Squat",
-            "10/10 ktb Row",
-            "12 Weighted Sit Ups"
-          ]
-        },
-        {
-          "nombre": "8' Run (A)",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 480,
-            "contar_rondas": true
-          },
-          "descanso_s": null,
-          "ejercicios": [
-            "8' Run"
-          ]
-        },
-        {
-          "nombre": "Every 2' x 4 (B)",
-          "timer": {
-            "tipo": "intervalo",
-            "cada_s": 120,
-            "rondas": 4
-          },
-          "descanso_s": null,
-          "ejercicios": [
-            "8/8 DB Bulgarian Split Squat",
-            "10/10 DB Single Arm Strict Press",
-            "20'' Plank"
-          ]
-        },
-        {
-          "nombre": "8' Run (B)",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 480,
-            "contar_rondas": true
-          },
-          "descanso_s": 0,
-          "ejercicios": [
-            "8' Run"
-          ]
-        }
-      ]
-    },
-    {
-      "dia": "miercoles",
-      "fecha": "2026-11-18",
-      "nombre": "AMRAP 8' x 4 zonas parejas",
-      "parejas": true,
-      "bloques": [
-        {
-          "nombre": "Zona 1 SKI",
           "timer": {
             "tipo": "amrap",
             "duracion_s": 480
@@ -151,156 +19,7 @@
           "descanso_s": 60,
           "ejercicios": [
             "12 Cal Ski",
-            "10 Wall Balls"
-          ]
-        },
-        {
-          "nombre": "Zona 2 SLED",
-          "timer": {
-            "tipo": "amrap",
-            "duracion_s": 480
-          },
-          "descanso_s": 60,
-          "ejercicios": [
-            "20 m Sled Push",
-            "10 Burpees Over Line"
-          ]
-        },
-        {
-          "nombre": "Zona 3 DB",
-          "timer": {
-            "tipo": "amrap",
-            "duracion_s": 480
-          },
-          "descanso_s": 60,
-          "ejercicios": [
-            "10 DB Devil Press",
-            "20 m DB Front Rack Carry"
-          ]
-        },
-        {
-          "nombre": "Zona 4 RUN",
-          "timer": {
-            "tipo": "amrap",
-            "duracion_s": 480
-          },
-          "descanso_s": 0,
-          "ejercicios": [
-            "200 m Run",
-            "12 Box Jump Overs"
-          ]
-        }
-      ]
-    },
-    {
-      "dia": "jueves",
-      "fecha": "2026-11-19",
-      "nombre": "Running Day",
-      "deporte": "carrera",
-      "bloques": [
-        {
-          "nombre": "1-200 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 60,
-            "contar_rondas": true
-          },
-          "descanso_s": 45,
-          "ejercicios": [
-            "200 m Run"
-          ]
-        },
-        {
-          "nombre": "2-350 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 105,
-            "contar_rondas": true
-          },
-          "descanso_s": 60,
-          "ejercicios": [
-            "350 m Run"
-          ]
-        },
-        {
-          "nombre": "3-700 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 210,
-            "contar_rondas": true
-          },
-          "descanso_s": 90,
-          "ejercicios": [
-            "700 m Run"
-          ]
-        },
-        {
-          "nombre": "4-1.050 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 315,
-            "contar_rondas": true
-          },
-          "descanso_s": 120,
-          "ejercicios": [
-            "1.050 m Run"
-          ]
-        },
-        {
-          "nombre": "5-700 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 210,
-            "contar_rondas": true
-          },
-          "descanso_s": 90,
-          "ejercicios": [
-            "700 m Run"
-          ]
-        },
-        {
-          "nombre": "6-350 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 105,
-            "contar_rondas": true
-          },
-          "descanso_s": 60,
-          "ejercicios": [
-            "350 m Run"
-          ]
-        },
-        {
-          "nombre": "7-200 m",
-          "timer": {
-            "tipo": "cuenta_atras",
-            "duracion_s": 60,
-            "contar_rondas": true
-          },
-          "descanso_s": 0,
-          "ejercicios": [
-            "200 m Run"
-          ]
-        }
-      ]
-    },
-    {
-      "dia": "viernes",
-      "fecha": "2026-11-20",
-      "nombre": "AMRAP 8' x 4 zonas parejas",
-      "parejas": true,
-      "bloques": [
-        {
-          "nombre": "Zona 1",
-          "timer": {
-            "tipo": "amrap",
-            "duracion_s": 480
-          },
-          "descanso_s": 60,
-          "ejercicios": [
-            "30 Cal Row",
-            "30 Box Step Overs",
-            "20 Push Ups sincronizados"
+            "200 m Run rápido"
           ]
         },
         {
@@ -311,9 +30,8 @@
           },
           "descanso_s": 60,
           "ejercicios": [
-            "20 m Sled Push",
-            "20 m Sled Pull",
-            "30 KB Goblet Squats"
+            "30 m Backward Sled Drag",
+            "200 m Run rápido"
           ]
         },
         {
@@ -324,9 +42,9 @@
           },
           "descanso_s": 60,
           "ejercicios": [
-            "350 m Run juntos",
-            "20 DB Alternating Snatch",
-            "20 Burpees Over DB"
+            "12 DB Alternating Hang Clean",
+            "12 DB Push Press",
+            "10 Burpees Over DB"
           ]
         },
         {
@@ -337,22 +55,207 @@
           },
           "descanso_s": 0,
           "ejercicios": [
-            "30 Cal Ski",
-            "30 Sandbag Bear Hug Reverse Lunges",
-            "...g Over Shoulder"
+            "16 KB Russian Swings",
+            "12/12 KB Gorilla Row",
+            "20 m KB Overhead Carry"
+          ]
+        }
+      ]
+    },
+    {
+      "dia": "martes",
+      "fecha": "2026-11-24",
+      "nombre": "Every 3' x 5 (A y B)",
+      "parejas": true,
+      "bloques": [
+        {
+          "nombre": "Bloque A",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 180,
+            "rondas": 5
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "10 Barbell Front Squat, repartidos 5/5",
+            "16 DB Romanian Deadlift, repartidos 8/8",
+            "20 Box Step Downs, repartidos 10/10"
+          ]
+        },
+        {
+          "nombre": "Bloque B",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 180,
+            "rondas": 5
+          },
+          "descanso_s": 0,
+          "ejercicios": [
+            "12 Barbell Bench Press, repartidos 6/6",
+            "16 DB Bent Over Row, repartidos 8/8",
+            "20 DB Floor Press, repartidos 10/10"
+          ]
+        }
+      ]
+    },
+    {
+      "dia": "miercoles",
+      "fecha": "2026-11-25",
+      "nombre": "E2MOM x3 + AMRAP 6' x2",
+      "bloques": [
+        {
+          "nombre": "1 Echo",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 120,
+            "rondas": 3
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "12 Cal Echo",
+            "8 Box Jump Overs"
+          ]
+        },
+        {
+          "nombre": "2 Sandbag",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 120,
+            "rondas": 3
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "12 Sandbag Front Loaded Good Mornings",
+            "20 m Shoulder Carry"
+          ]
+        },
+        {
+          "nombre": "3 Row",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 120,
+            "rondas": 3
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "12 Cal Row",
+            "8 Burpees to Target"
+          ]
+        },
+        {
+          "nombre": "4 Bulgarian Bag",
+          "timer": {
+            "tipo": "amrap",
+            "duracion_s": 360
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "12 Spins",
+            "10/10 Rotational Lunges"
+          ]
+        },
+        {
+          "nombre": "5 Bodyweight",
+          "timer": {
+            "tipo": "amrap",
+            "duracion_s": 360
+          },
+          "descanso_s": 0,
+          "ejercicios": [
+            "12 Hand Release Push Ups",
+            "16 Alternating V-Ups",
+            "20 m Bear Crawl"
+          ]
+        }
+      ]
+    },
+    {
+      "dia": "jueves",
+      "fecha": "2026-11-26",
+      "nombre": "AMRAP 17' x 2 parejas",
+      "parejas": true,
+      "bloques": [
+        {
+          "nombre": "AMRAP 17' A",
+          "timer": {
+            "tipo": "amrap",
+            "duracion_s": 1020
+          },
+          "descanso_s": 120,
+          "ejercicios": [
+            "40 m Sled Push",
+            "40 m Sled Drag hacia delante, con cuerda",
+            "350 m Run juntos, rápido",
+            "20 Wall Balls"
+          ]
+        },
+        {
+          "nombre": "AMRAP 17' B",
+          "timer": {
+            "tipo": "amrap",
+            "duracion_s": 1020
+          },
+          "descanso_s": 0,
+          "ejercicios": [
+            "30 Cal Row o Ski",
+            "350 m Run juntos, rápido",
+            "30 Box Step Overs",
+            "20 Synchro Burpees"
+          ]
+        }
+      ]
+    },
+    {
+      "dia": "viernes",
+      "fecha": "2026-11-27",
+      "nombre": "Carrera: velocidad y ritmo",
+      "deporte": "carrera",
+      "bloques": [
+        {
+          "nombre": "A Velocidad",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 120,
+            "rondas": 6
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "6 x 200 m Run"
+          ]
+        },
+        {
+          "nombre": "B Ritmo fuerte",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 180,
+            "rondas": 5
+          },
+          "descanso_s": 60,
+          "ejercicios": [
+            "5 x 350 m Run"
+          ]
+        },
+        {
+          "nombre": "C Resistencia a la velocidad",
+          "timer": {
+            "tipo": "intervalo",
+            "cada_s": 360,
+            "rondas": 3
+          },
+          "descanso_s": 0,
+          "ejercicios": [
+            "3 x 700 m Run"
           ]
         }
       ]
     }
   ],
   "dudas": [
-    "Jueves: cada tramo con tope a 5:00/km (200 m = 60 s, 350 m = 105 s, 700 m = 210 s, 1050 m = 315 s) y descanso automatico despues; vuelta a la calma fuera del crono. Decidido por el usuario.",
-    "Miercoles y viernes: 1' de descanso entre zonas, decidido por el usuario.",
-    "Lunes: descanso_s del ultimo bloque a 0 (no hay descanso tras la zona 5).",
-    "Martes: la imagen no indica descanso entre bloques; descanso_s null en los tres primeros.",
-    "Martes: '8 D Db Front Squat' conservado tal cual (probable errata de '8 DB Front Squat'); 'ktb Row' probable 'KB Row'.",
-    "Viernes zona 4: tercer ejercicio cortado por el borde, conservado como '...g Over Shoulder' (probable 'Sandbag Over Shoulder' sin numero).",
-    "Viernes: 'todo a repartir menos lo que pone syncro' solo se refleja en los textos; no hay roles.",
-    "Miercoles: 'i go you go' va en ejercicios compartidos, sin roles."
+    "Viernes: se siguen las salidas (12' + 15' + 18'), no los 12' de cada titulo, decidido por el usuario.",
+    "Martes, miercoles y viernes: 1' de descanso entre bloques/zonas, decidido por el usuario.",
+    "Lunes: 'AMRAP 8' por zona, 1' de rest' interpretado como 4 AMRAP de 8' con 60 s de descanso entre zonas (0 tras la ultima).",
+    "Jueves: '30/24 Cal Row o Ski' usa 30 (valor de hombre); queda 'Row o Ski' sin elegir. 2' REST entre AMRAP puesto como descanso_s 120 del primer bloque.",
+    "Viernes B: 5 x 3' = 15', no cuadra con los 12' indicados; se siguen las salidas (cada 3', 5 rondas).",
+    "Viernes C: 3 x 6' = 18', no cuadra con los 12' indicados; se siguen las salidas (cada 6', 3 rondas)."
   ]
 }
