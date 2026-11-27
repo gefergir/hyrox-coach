@@ -170,16 +170,30 @@ module Retos {
         return days == 1 ? "Falta 1 día" : "Faltan " + days + " días";
     }
 
+    // La actividad del día del reto con la que se superó, si ese día ya ha llegado; si no, null.
+    function superado(item, acts, today) {
+        if (item["dn"] > today) {
+            return null;
+        }
+        return RetoStats.actividad(item, acts);
+    }
+
     function buildMenu(acts) {
         var items = ordered();
         var rows = Datos.sesiones(acts);
         var today = Historial.today();
         var menu = new WatchUi.Menu2({:title => "Retos"});
         for (var i = 0; i < items.size(); i++) {
-            var ev = evaluate(items[i], acts, rows, today);
-            var sub = daysText(items[i]["dn"] - today);
-            if (ev["sem"] != $.SEM_PASADO) {
-                sub += " · " + (ev["sem"] == $.SEM_SIN_DATOS ? "sin datos" : semLabel(ev["sem"]) + " (est.)");
+            var hecho = superado(items[i], acts, today);
+            var sub;
+            if (hecho != null) {
+                sub = "Superado · " + RetoStats.fmtTiempo(hecho["secs"]);
+            } else {
+                var ev = evaluate(items[i], acts, rows, today);
+                sub = daysText(items[i]["dn"] - today);
+                if (ev["sem"] != $.SEM_PASADO) {
+                    sub += " · " + (ev["sem"] == $.SEM_SIN_DATOS ? "sin datos" : semLabel(ev["sem"]) + " (est.)");
+                }
             }
             menu.addItem(new WatchUi.MenuItem(items[i]["reto"]["nombre"], sub, i, {}));
         }
@@ -200,6 +214,12 @@ class RetosDelegate extends WatchUi.Menu2InputDelegate {
         var i = item.getId();
         if (i < items.size()) {
             var today = Historial.today();
+            var hecho = Retos.superado(items[i], acts, today);
+            if (hecho != null) {
+                var sv = new RetoSuperadoView(items[i], hecho, acts);
+                WatchUi.pushView(sv, new PagerDelegate(sv), WatchUi.SLIDE_LEFT);
+                return;
+            }
             var ev = Retos.evaluate(items[i], acts, Datos.sesiones(acts), today);
             WatchUi.pushView(new RetoView(items[i], ev, today), new WatchUi.BehaviorDelegate(), WatchUi.SLIDE_LEFT);
         }

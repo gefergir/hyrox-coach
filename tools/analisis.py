@@ -196,6 +196,67 @@ def series_fade(laps, session_pace):
     return {"reps": len(paces), "pace_first": first, "pace_second": second, "fade_pct": (second - first) / first * 100}
 
 
+def km_splits(records):
+    """Segundos de cada kilómetro completo, a partir de la distancia acumulada de los registros."""
+    pts = [(r["t"], r["d"]) for r in records if r["t"] is not None and r["d"] is not None]
+    if len(pts) < 2:
+        return []
+    out = []
+    prev_t = pts[0][0]
+    mark = 1000.0
+    for t, d in pts:
+        while d >= mark:
+            out.append(round(t - prev_t))
+            prev_t = t
+            mark += 1000.0
+    return out
+
+
+def halves(records, dist):
+    """Ritmo (s/km) de la primera y la segunda mitad de la distancia."""
+    pts = [(r["t"], r["d"]) for r in records if r["t"] is not None and r["d"] is not None]
+    if len(pts) < 2 or not dist:
+        return None
+    half = dist / 2
+    t0, t_end = pts[0][0], pts[-1][0]
+    t_half = next((t for t, d in pts if d >= half), None)
+    if t_half is None or t_half <= t0 or t_end <= t_half:
+        return None
+    return [round((t_half - t0) / (half / 1000)), round((t_end - t_half) / ((dist - half) / 1000))]
+
+
+def retos_superados(acts, retos):
+    """Para cada reto ya pasado, las estadísticas de la actividad de ese día que mejor encaja."""
+    out = {}
+    today = dt.date.today().isoformat()
+    for reto in retos:
+        fecha = reto.get("fecha")
+        if not fecha or fecha > today:
+            continue
+        same_day = [a for a in acts if local_dt(a["s"]["start"]).date().isoformat() == fecha]
+        if reto.get("tipo") == "carrera":
+            cand = [a for a in same_day if a["cat"] == "carrera" and a["s"]["dist"]]
+            meta = float(reto.get("distancia_km") or 0) * 1000
+            best = min(cand, key=lambda a: abs(a["s"]["dist"] - meta)) if cand else None
+        else:
+            cand = [a for a in same_day if a["cat"] == "hyrox"] or same_day
+            best = max(cand, key=lambda a: a["s"]["secs"]) if cand else None
+        if best is None:
+            continue
+        s = best["s"]
+        item = {"s": round(s["secs"]), "km": round(s["dist"] / 1000, 2), "fc": s["avg_hr"], "fcm": s["max_hr"]}
+        if best["cat"] == "carrera":
+            item["p"] = km_splits(best["records"])[:42]
+            m = halves(best["records"], s["dist"])
+            if m:
+                item["m"] = m
+        tramos = [{"n": l["name"], "s": round(l["secs"])} for l in best["laps"] if l["name"] and l["secs"]]
+        if tramos:
+            item["tramos"] = tramos[:12]
+        out[fecha] = item
+    return out
+
+
 def ewma(series, days):
     a = 1 - math.exp(-1 / days)
     out = []
@@ -301,11 +362,19 @@ def main():
         for t in r.get("tramos", []):
             estaciones[t["n"]].append({"fecha": r["fecha"], "s": t["s"]})
 
+    # Retos ya pasados: pulso, parciales por km y mitades de la actividad de ese día
+    retos_path = Path(__file__).resolve().parent.parent / "docs" / "retos.json"
+    try:
+        lista_retos = json.loads(retos_path.read_text(encoding="utf-8")).get("retos", [])
+    except (OSError, ValueError):
+        lista_retos = []
+    retos = retos_superados(acts, lista_retos)
+
     full = {
         "generado": dt.datetime.now().isoformat(timespec="minutes"),
         "referencias": {"fc_reposo": rest, "fc_max": hrmax, "coef": k},
         "actividades": rows, "carga": carga, "efecto_gym": efecto_gym,
-        "habitos": habitos, "estaciones": estaciones,
+        "habitos": habitos, "estaciones": estaciones, "retos": retos,
     }
     out_full.parent.mkdir(parents=True, exist_ok=True)
     out_full.write_text(json.dumps(full, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -327,6 +396,7 @@ def main():
         "mpl": mpl_trend, "deriva": deriva, "series": series, "efecto_gym": efecto_gym,
         "mapa": heat, "descanso_medio": habitos["descanso_medio"],
         "estaciones": {n: [x["s"] for x in v[-6:]] for n, v in estaciones.items()},
+        "retos": retos,
     }
     out_watch.write_text(json.dumps(watch, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 

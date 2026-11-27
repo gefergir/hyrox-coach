@@ -65,7 +65,7 @@ Cuando el usuario diga «analiza mis entrenos» (con el reloj conectado por USB 
 3. Compila Mi Temporada con `build-temporada.ps1` (copia `stats_reloj.json` dentro de la app) e instálala en `GARMIN\Apps`.
 4. Ejecuta `python3 tools/panel_datos.py <hyrox-datos>/analisis.json <hyrox-datos>/panel`, sube cada JSON como nuevo archivo del panel privado https://claude.ai/artifact/6sF3MSSZoH1imfHpM1ibaL y actualiza su dataset (`url`, `name`, `updated`).
 
-Las estadísticas de pulso y carga nunca se suben a GitHub: `watch-temporada/resources/stats.json` está en `.gitignore`. Resume al usuario el ratio de carga, la eficiencia y lo que haya cambiado.
+El análisis también guarda, para cada reto ya pasado, el pulso, los parciales por km y las mitades de esa actividad; Mi Temporada los muestra en la ficha del reto superado. Las estadísticas de pulso y carga nunca se suben a GitHub: `watch-temporada/resources/stats.json` está en `.gitignore`. Resume al usuario el ratio de carga, la eficiencia y lo que haya cambiado.
 
 ## Entrenos del reloj (Fuerza, Correr libre y series)
 
