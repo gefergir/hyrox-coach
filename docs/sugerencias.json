@@ -166,14 +166,6 @@
       "fuente": "https://hyrox.com/find-my-race/"
     },
     {
-      "nombre": "HYROX Milan",
-      "tipo": "hyrox",
-      "fecha": "2026-12-04",
-      "fecha_fin": "2026-12-06",
-      "lugar": "Milán",
-      "fuente": "https://hyrox.com/find-my-race/"
-    },
-    {
       "nombre": "Bimbo Breakfast Run",
       "tipo": "carrera",
       "fecha": "2026-12-05",

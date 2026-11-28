@@ -7,6 +7,12 @@
       "distancia_km": 6
     },
     {
+      "nombre": "HYROX Milán",
+      "fecha": "2026-12-05",
+      "tipo": "hyrox",
+      "distancia_km": 8
+    },
+    {
       "nombre": "Sant Roquense 5K (Museros)",
       "fecha": "2027-01-16",
       "tipo": "carrera",
@@ -21,6 +27,12 @@
     {
       "nombre": "Hyrox Zoma (gimnasio)",
       "fecha": "2027-02-13",
+      "tipo": "hyrox",
+      "distancia_km": 8
+    },
+    {
+      "nombre": "Hybrid Day Valencia",
+      "fecha": "2027-06-12",
       "tipo": "hyrox",
       "distancia_km": 8
     }
